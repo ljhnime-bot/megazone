@@ -2,21 +2,54 @@
 <html>
 <head>
   <title>Megazone Data</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+    h1 {
+      margin-top: 50px;
+      color: #333;
+    }
+
+    .container {
+      margin-top: 40px;
+    }
+
+    a {
+      display: inline-block;
+      margin: 15px;
+      padding: 15px 30px;
+      background-color: #4CAF50;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 18px;
+      transition: 0.2s;
+    }
+
+    a:hover {
+      background-color: #45a049;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
+
 <body>
+
   <h1>Megazone 재무 데이터</h1>
 
-  <ul>
-    <li>
-      <a href="megazone_balance_sheet_2018_2024.html">
-        재무상태표 보기
-      </a>
-    </li>
-    <li>
-      <a href="megazone_cloud_financials_2018_2024.html">
-        클라우드 재무 보기
-      </a>
-    </li>
-  </ul>
+  <div class="container">
+    <a href="megazone_balance_sheet_2018_2024.html">
+      재무상태표 보기
+    </a>
+
+    <a href="megazone_cloud_financials_2018_2024.html">
+      손익계산서 보기
+    </a>
+  </div>
+
 </body>
 </html>
