@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IaaS · PaaS · SaaS — 피자 비유로 이해하기</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f4ef;
+    --bg3: #eeedea;
+    --text: #1a1a18;
+    --text2: #73726c;
+    --text3: #9c9a92;
+    --border: rgba(0,0,0,0.12);
+    --border2: rgba(0,0,0,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --danger-bg: #fcebeb;
+    --danger-text: #a32d2d;
+    --danger-border: rgba(163,45,45,0.25);
+    --success-bg: #eaf3de;
+    --success-text: #3b6d11;
+    --success-border: rgba(59,109,17,0.25);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c;
+      --bg2: #2a2a28;
+      --bg3: #323230;
+      --text: #e8e6de;
+      --text2: #9c9a92;
+      --text3: #6b6a64;
+      --border: rgba(255,255,255,0.1);
+      --border2: rgba(255,255,255,0.2);
+      --danger-bg: #2d1a1a;
+      --danger-text: #f09595;
+      --danger-border: rgba(240,149,149,0.2);
+      --success-bg: #1a2d10;
+      --success-text: #97c459;
+      --success-border: rgba(151,196,89,0.2);
+    }
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+
+  .legend {
+    display: flex;
+    gap: 16px;
+    font-size: 11px;
+    color: var(--text2);
+    margin-bottom: 12px;
+  }
+
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+
+  .dot-mine {
+    background: var(--danger-bg);
+    border: 0.5px solid var(--danger-border);
+  }
+
+  .dot-theirs {
+    background: var(--success-bg);
+    border: 0.5px solid var(--success-border);
+  }
+
+  .model-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .m-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 8px;
+    border: 0.5px solid var(--border);
+    background: var(--bg2);
+    color: var(--text2);
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: var(--radius-md);
+    text-align: center;
+    line-height: 1.5;
+    transition: all .18s;
+    font-family: inherit;
+  }
+
+  .m-btn.on {
+    background: var(--bg);
+    color: var(--text);
+    font-weight: 500;
+    border-color: var(--border2);
+  }
+
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  .analogy-box {
+    background: var(--bg2);
+    border-radius: var(--radius-md);
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--text2);
+    margin: 0 0 12px;
+  }
+
+  .layer-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0 0 12px;
+  }
+
+  .layer-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .layer-name {
+    font-size: 11px;
+    color: var(--text2);
+    width: 150px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .layer-bar {
+    flex: 1;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .layer-bar.mine {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+    border: 0.5px solid var(--danger-border);
+  }
+
+  .layer-bar.theirs {
+    background: var(--success-bg);
+    color: var(--success-text);
+    border: 0.5px solid var(--success-border);
+  }
+
+  .example-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .chip {
+    font-size: 11px;
+    padding: 3px 9px;
+    border-radius: 10px;
+    background: var(--bg2);
+    color: var(--text2);
+    border: 0.5px solid var(--border);
+  }
+
+  .kv {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .kv-card {
+    flex: 1;
+    min-width: 140px;
+    background: var(--bg2);
+    border-radius: var(--radius-md);
+    padding: 8px 10px;
+    font-size: 11px;
+    color: var(--text2);
+    line-height: 1.6;
+  }
+
+  .kv-card strong {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-top: 24px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 0.5px solid var(--border);
+  }
+
+  .summary-table th {
+    background: var(--bg2);
+    color: var(--text2);
+    font-weight: 500;
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .summary-table td {
+    padding: 8px 12px;
+    border-bottom: 0.5px solid var(--border);
+    color: var(--text2);
+    vertical-align: top;
+  }
+
+  .summary-table tr:last-child td { border-bottom: none; }
+  .summary-table td:first-child { font-weight: 500; color: var(--text); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>IaaS · PaaS · SaaS</h1>
+  <p class="subtitle">피자 가게 비유로 이해하는 클라우드 서비스 모델 — "내가 직접 만드냐, 얼마나 맡기냐"의 차이</p>
+
+  <div class="legend">
+    <span><span class="dot dot-mine"></span>내가 직접 관리</span>
+    <span><span class="dot dot-theirs"></span>제공자가 알아서 해줌</span>
+  </div>
+
+  <div class="model-tabs">
+    <button class="m-btn on" onclick="show(0)">On-Premise<br>자취방에서 직접</button>
+    <button class="m-btn" onclick="show(1)">IaaS<br>식재료 배달</button>
+    <button class="m-btn" onclick="show(2)">PaaS<br>밀키트</button>
+    <button class="m-btn" onclick="show(3)">SaaS<br>피자 배달 앱</button>
+  </div>
+
+  <!-- On-Premise -->
+  <div class="panel on" id="p0">
+    <div class="analogy-box">
+      자취방에서 피자를 처음부터 끝까지 직접 만드는 것. 밀가루 반죽부터 오븐 구매, 온도 조절까지 전부 내 몫. 완전한 자유가 있는 대신, 뭔가 잘못되면 100% 내 책임입니다.
+    </div>
+    <div class="layer-grid">
+      <div class="layer-row"><span class="layer-name">앱 · 데이터</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">런타임 · 미들웨어</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">OS</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">가상화</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">서버 하드웨어</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">네트워크 · 전력</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">건물 · 데이터센터</span><div class="layer-bar mine">내가 관리</div></div>
+    </div>
+    <div class="kv">
+      <div class="kv-card"><strong>장점</strong>완전한 통제권. 보안·커스터마이징 최대화. 외부 의존성 없음.</div>
+      <div class="kv-card"><strong>단점</strong>초기 투자 비용 폭발. 전문 인력 필요. 확장이 느리고 비쌈.</div>
+      <div class="kv-card"><strong>쓰는 곳</strong>금융·국방 등 보안 규제가 극도로 엄격한 환경</div>
+    </div>
+  </div>
+
+  <!-- IaaS -->
+  <div class="panel" id="p1">
+    <div class="analogy-box">
+      마트에서 밀가루·치즈·소스를 배달받는 것. 재료(서버·네트워크·저장소)는 AWS가 갖다주지만, 반죽하고 굽는 건(OS 설치, 앱 개발, 보안 설정) 내가 합니다. 오븐은 빌려 쓰는 거예요.
+    </div>
+    <div class="layer-grid">
+      <div class="layer-row"><span class="layer-name">앱 · 데이터</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">런타임 · 미들웨어</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">OS</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">가상화</span><div class="layer-bar theirs">AWS · GCP · Azure 제공</div></div>
+      <div class="layer-row"><span class="layer-name">서버 하드웨어</span><div class="layer-bar theirs">AWS · GCP · Azure 제공</div></div>
+      <div class="layer-row"><span class="layer-name">네트워크 · 전력</span><div class="layer-bar theirs">AWS · GCP · Azure 제공</div></div>
+      <div class="layer-row"><span class="layer-name">건물 · 데이터센터</span><div class="layer-bar theirs">AWS · GCP · Azure 제공</div></div>
+    </div>
+    <div class="example-chips">
+      <span class="chip">AWS EC2</span>
+      <span class="chip">Google Compute Engine</span>
+      <span class="chip">Azure VM</span>
+      <span class="chip">AWS S3</span>
+    </div>
+    <div class="kv">
+      <div class="kv-card"><strong>장점</strong>서버 살 돈 불필요. 사용한 만큼만 과금. 필요하면 5분 만에 서버 100대 추가.</div>
+      <div class="kv-card"><strong>단점</strong>OS·보안·앱은 여전히 내 몫. 클라우드 엔지니어 필요. 잘못 쓰면 요금 폭탄.</div>
+      <div class="kv-card"><strong>쓰는 곳</strong>자체 개발팀 보유 기업, 커스터마이징이 많이 필요한 서비스</div>
+    </div>
+  </div>
+
+  <!-- PaaS -->
+  <div class="panel" id="p2">
+    <div class="analogy-box">
+      반조리 밀키트를 시키는 것. 도우는 이미 만들어져 있고(OS·런타임 세팅 완료), 나는 좋아하는 토핑(내 앱 코드)만 올리면 됩니다. 굽는 방법도 레시피대로 하면 되니 훨씬 쉬워요.
+    </div>
+    <div class="layer-grid">
+      <div class="layer-row"><span class="layer-name">앱 · 데이터</span><div class="layer-bar mine">내가 관리</div></div>
+      <div class="layer-row"><span class="layer-name">런타임 · 미들웨어</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+      <div class="layer-row"><span class="layer-name">OS</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+      <div class="layer-row"><span class="layer-name">가상화</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+      <div class="layer-row"><span class="layer-name">서버 하드웨어</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+      <div class="layer-row"><span class="layer-name">네트워크 · 전력</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+      <div class="layer-row"><span class="layer-name">건물 · 데이터센터</span><div class="layer-bar theirs">플랫폼이 알아서</div></div>
+    </div>
+    <div class="example-chips">
+      <span class="chip">AWS Elastic Beanstalk</span>
+      <span class="chip">Google App Engine</span>
+      <span class="chip">Heroku</span>
+      <span class="chip">Vercel</span>
+    </div>
+    <div class="kv">
+      <div class="kv-card"><strong>장점</strong>코드만 짜면 됨. 인프라 걱정 Zero. 개발 속도가 극적으로 빨라짐.</div>
+      <div class="kv-card"><strong>단점</strong>플랫폼이 허용하는 범위 안에서만 자유. 벤더 종속 위험. 세밀한 설정 불가.</div>
+      <div class="kv-card"><strong>쓰는 곳</strong>스타트업, 빠른 프로토타입, 소규모 개발팀</div>
+    </div>
+  </div>
+
+  <!-- SaaS -->
+  <div class="panel" id="p3">
+    <div class="analogy-box">
+      배달 앱에서 피자를 주문하는 것. 레시피도, 오븐도, 배달도 전부 가게가 합니다. 나는 그냥 앱 켜고 먹기만 하면 됩니다. 로그인해서 쓰는 Gmail, Slack, Netflix가 다 SaaS예요.
+    </div>
+    <div class="layer-grid">
+      <div class="layer-row"><span class="layer-name">앱 · 데이터</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">런타임 · 미들웨어</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">OS</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">가상화</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">서버 하드웨어</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">네트워크 · 전력</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+      <div class="layer-row"><span class="layer-name">건물 · 데이터센터</span><div class="layer-bar theirs">제공자가 다 해줌</div></div>
+    </div>
+    <div class="example-chips">
+      <span class="chip">Gmail</span>
+      <span class="chip">Slack</span>
+      <span class="chip">Salesforce</span>
+      <span class="chip">Notion</span>
+      <span class="chip">Netflix</span>
+      <span class="chip">SpaceONE</span>
+      <span class="chip">GenAI360</span>
+    </div>
+    <div class="kv">
+      <div class="kv-card"><strong>장점</strong>설치·유지보수 Zero. 어디서든 접속. 월정액 구독 → 예측 가능한 비용.</div>
+      <div class="kv-card"><strong>단점</strong>커스터마이징 거의 불가. 데이터가 외부에 저장됨. 인터넷 없으면 못 씀.</div>
+      <div class="kv-card"><strong>왜 중요?</strong>마진 60~80%. 구독 ARR로 기업가치 멀티플 극대화 → IPO 핵심 자산</div>
+    </div>
+  </div>
+
+  <!-- Summary table -->
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>모델</th>
+        <th>비유</th>
+        <th>내가 하는 일</th>
+        <th>핵심 특징</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>On-Premise</td>
+        <td>직접 농사 지어 피자 만들기</td>
+        <td>전부 다</td>
+        <td>완전한 통제, 가장 비쌈</td>
+      </tr>
+      <tr>
+        <td>IaaS</td>
+        <td>식재료 배달받아 직접 요리</td>
+        <td>요리만</td>
+        <td>인프라 임대, 설정은 직접</td>
+      </tr>
+      <tr>
+        <td>PaaS</td>
+        <td>밀키트 시켜서 토핑만 올리기</td>
+        <td>토핑(코드)만</td>
+        <td>플랫폼 위에서 개발만 집중</td>
+      </tr>
+      <tr>
+        <td>SaaS</td>
+        <td>배달 앱에서 완성된 피자 주문</td>
+        <td>먹기(쓰기)만</td>
+        <td>구독, 마진 60~80%, ARR 누적</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+function show(i) {
+  document.querySelectorAll('.panel').forEach((p, j) => p.classList.toggle('on', i === j));
+  document.querySelectorAll('.m-btn').forEach((b, j) => b.classList.toggle('on', i === j));
+}
+</script>
+</body>
+</html>
