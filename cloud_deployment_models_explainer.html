@@ -1,0 +1,258 @@
+
+<style>
+.nav-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
+.np{padding:7px 12px;border:0.5px solid var(--color-border-tertiary);background:var(--color-background-secondary);color:var(--color-text-secondary);font-size:12px;cursor:pointer;border-radius:var(--border-radius-md);transition:all .18s;font-family:inherit;white-space:nowrap}
+.np.on{background:var(--color-background-primary);color:var(--color-text-primary);font-weight:500;border-color:var(--color-border-primary)}
+.pn{display:none}.pn.on{display:block}
+.meta-row{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
+.meta{flex:1;min-width:100px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:8px 10px;text-align:center}
+.meta .mv{font-size:13px;font-weight:500}
+.meta .ml{font-size:10px;color:var(--color-text-secondary);margin-top:2px}
+.pros-cons{display:flex;gap:8px;margin:10px 0}
+.pc{flex:1;border-radius:var(--border-radius-md);padding:9px 11px}
+.pc-title{font-size:11px;font-weight:500;margin-bottom:5px}
+.pc-item{font-size:11px;color:var(--color-text-secondary);padding:3px 0;line-height:1.5;display:flex;gap:5px;align-items:flex-start}
+.dot-g{width:6px;height:6px;border-radius:50%;background:#1D9E75;flex-shrink:0;margin-top:4px}
+.dot-r{width:6px;height:6px;border-radius:50%;background:#E24B4A;flex-shrink:0;margin-top:4px}
+.who-box{border-radius:var(--border-radius-md);padding:8px 12px;font-size:12px;line-height:1.6;margin-top:8px}
+</style>
+
+<div style="padding:1rem 0">
+
+<div class="nav-pills">
+  <button class="np on" onclick="go(0)">온프레미스</button>
+  <button class="np" onclick="go(1)">퍼블릭 클라우드</button>
+  <button class="np" onclick="go(2)">프라이빗 클라우드</button>
+  <button class="np" onclick="go(3)">하이브리드 클라우드</button>
+  <button class="np" onclick="go(4)">멀티 클라우드</button>
+</div>
+
+<!-- 온프레미스 -->
+<div class="pn on" id="p0">
+<svg width="100%" viewBox="0 0 680 200">
+  <rect x="60" y="20" width="560" height="160" rx="12" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1" stroke-dasharray="6 3"/>
+  <text class="th" x="100" y="46" style="fill:var(--color-text-secondary)">우리 회사 건물 (사내)</text>
+  <g class="c-gray"><rect x="80" y="60" width="100" height="56" rx="6" stroke-width="0.5"/><text class="th" x="130" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:11px">서버실</text><text class="ts" x="130" y="99" text-anchor="middle" dominant-baseline="central">직접 구매</text></g>
+  <g class="c-gray"><rect x="200" y="60" width="100" height="56" rx="6" stroke-width="0.5"/><text class="th" x="250" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:11px">네트워크</text><text class="ts" x="250" y="99" text-anchor="middle" dominant-baseline="central">직접 구축</text></g>
+  <g class="c-gray"><rect x="320" y="60" width="100" height="56" rx="6" stroke-width="0.5"/><text class="th" x="370" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:11px">스토리지</text><text class="ts" x="370" y="99" text-anchor="middle" dominant-baseline="central">직접 관리</text></g>
+  <g class="c-gray"><rect x="440" y="60" width="100" height="56" rx="6" stroke-width="0.5"/><text class="th" x="490" y="82" text-anchor="middle" dominant-baseline="central" style="font-size:11px">보안·운영팀</text><text class="ts" x="490" y="99" text-anchor="middle" dominant-baseline="central">직접 고용</text></g>
+  <text class="ts" x="340" y="148" text-anchor="middle" style="fill:var(--color-text-tertiary)">모든 인프라를 회사가 직접 소유·운영 — 인터넷 불필요, 외부 접근 차단</text>
+  <text class="ts" x="340" y="168" text-anchor="middle" style="fill:var(--color-text-tertiary)">비유: 회사 안에 직접 지은 전용 발전소</text>
+</svg>
+<div class="meta-row">
+  <div class="meta"><div class="mv" style="color:#E24B4A">매우 높음</div><div class="ml">초기 비용 (CAPEX)</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">최고</div><div class="ml">보안·통제권</div></div>
+  <div class="meta"><div class="mv" style="color:#E24B4A">매우 낮음</div><div class="ml">확장 유연성</div></div>
+  <div class="meta"><div class="mv" style="color:#E24B4A">느림</div><div class="ml">구축 속도</div></div>
+  <div class="meta"><div class="mv" style="color:#888780">사용량 무관</div><div class="ml">운영비 구조</div></div>
+</div>
+<div class="pros-cons">
+  <div class="pc" style="background:var(--color-background-success)">
+    <div class="pc-title" style="color:var(--color-text-success)">장점</div>
+    <div class="pc-item"><span class="dot-g"></span><span>완전한 통제권 — 데이터가 외부로 절대 나가지 않음</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>인터넷 없어도 운영 가능</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>장기적으로 쓰면 운영비 예측 가능</span></div>
+  </div>
+  <div class="pc" style="background:var(--color-background-danger)">
+    <div class="pc-title" style="color:var(--color-text-danger)">단점</div>
+    <div class="pc-item"><span class="dot-r"></span><span>서버 살 때 수십억 초기 투자 필요</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>갑자기 트래픽 폭발하면 대응 불가</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>유지보수 인력 내부에 계속 필요</span></div>
+  </div>
+</div>
+<div class="who-box" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">
+  <strong style="color:var(--color-text-primary)">주로 쓰는 곳:</strong> 국방·금융·병원 등 데이터가 외부로 절대 나가면 안 되는 규제 산업. 또는 이미 대규모 인프라에 투자한 제조업 대기업.
+</div>
+</div>
+
+<!-- 퍼블릭 클라우드 -->
+<div class="pn" id="p1">
+<svg width="100%" viewBox="0 0 680 200">
+  <rect x="60" y="20" width="560" height="80" rx="12" fill="var(--color-background-info)" stroke="#185FA5" stroke-width="0.5" stroke-dasharray="6 3" opacity="0.4"/>
+  <text class="th" x="100" y="46" style="fill:#185FA5">AWS / Azure / GCP 데이터센터 (전 세계)</text>
+  <g class="c-blue"><rect x="80" y="52" width="90" height="36" rx="6" stroke-width="0.5"/><text class="th" x="125" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:11px">서버 수백만 대</text></g>
+  <g class="c-blue"><rect x="182" y="52" width="90" height="36" rx="6" stroke-width="0.5"/><text class="th" x="227" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:11px">스토리지 무한</text></g>
+  <g class="c-blue"><rect x="284" y="52" width="90" height="36" rx="6" stroke-width="0.5"/><text class="th" x="329" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:11px">네트워크</text></g>
+  <g class="c-blue"><rect x="386" y="52" width="90" height="36" rx="6" stroke-width="0.5"/><text class="th" x="431" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:11px">보안·운영</text></g>
+  <g class="c-blue"><rect x="488" y="52" width="90" height="36" rx="6" stroke-width="0.5"/><text class="th" x="533" y="70" text-anchor="middle" dominant-baseline="central" style="font-size:11px">200+ 서비스</text></g>
+  <line x1="340" y1="100" x2="340" y2="130" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text class="ts" x="340" y="122" text-anchor="middle" style="fill:#185FA5">인터넷으로 접속</text>
+  <rect x="220" y="132" width="240" height="48" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <text class="th" x="340" y="152" text-anchor="middle" dominant-baseline="central" style="font-size:12px">우리 회사 (로그인만 하면 사용)</text>
+  <text class="ts" x="340" y="168" text-anchor="middle" dominant-baseline="central">쓴 만큼만 요금 납부</text>
+</svg>
+<div class="meta-row">
+  <div class="meta"><div class="mv" style="color:#1D9E75">거의 없음</div><div class="ml">초기 비용</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">보통</div><div class="ml">보안·통제권</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">무제한</div><div class="ml">확장 유연성</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">즉시</div><div class="ml">구축 속도</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">종량제</div><div class="ml">운영비 구조</div></div>
+</div>
+<div class="pros-cons">
+  <div class="pc" style="background:var(--color-background-success)">
+    <div class="pc-title" style="color:var(--color-text-success)">장점</div>
+    <div class="pc-item"><span class="dot-g"></span><span>초기 투자 0원 — 로그인하면 바로 사용</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>서버 1대 → 10,000대 확장 5분</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>전 세계 어디서든 접근 가능</span></div>
+  </div>
+  <div class="pc" style="background:var(--color-background-danger)">
+    <div class="pc-title" style="color:var(--color-text-danger)">단점</div>
+    <div class="pc-item"><span class="dot-r"></span><span>잘못 쓰면 요금 폭탄 (FinOps 필요)</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>인터넷 끊기면 서비스 중단</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>데이터가 외부(AWS 서버)에 저장됨</span></div>
+  </div>
+</div>
+<div class="who-box" style="background:var(--color-background-info);color:var(--color-text-info)">
+  <strong style="color:var(--color-text-primary)">주로 쓰는 곳:</strong> 스타트업, 빠른 성장이 필요한 서비스, 트래픽 변동이 큰 이커머스·게임. 직방·카카오·넥슨 등이 대표 사례.
+</div>
+</div>
+
+<!-- 프라이빗 클라우드 -->
+<div class="pn" id="p2">
+<svg width="100%" viewBox="0 0 680 200">
+  <rect x="40" y="15" width="600" height="170" rx="12" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1.5" stroke-dasharray="6 3"/>
+  <text class="th" x="80" y="40" style="fill:var(--color-text-secondary)">우리 회사 전용 클라우드 환경 (접근 제한됨)</text>
+  <rect x="60" y="52" width="280" height="80" rx="8" fill="var(--color-background-secondary)" stroke="#534AB7" stroke-width="0.8"/>
+  <text class="ts" x="200" y="70" text-anchor="middle" style="fill:#534AB7">클라우드 기술 적용 (가상화·자동화)</text>
+  <g class="c-purple"><rect x="76" y="78" width="80" height="40" rx="6" stroke-width="0.5"/><text class="ts" x="116" y="98" text-anchor="middle" dominant-baseline="central">가상서버</text></g>
+  <g class="c-purple"><rect x="168" y="78" width="80" height="40" rx="6" stroke-width="0.5"/><text class="ts" x="208" y="98" text-anchor="middle" dominant-baseline="central">전용 스토리지</text></g>
+  <g class="c-purple"><rect x="260" y="78" width="68" height="40" rx="6" stroke-width="0.5"/><text class="ts" x="294" y="98" text-anchor="middle" dominant-baseline="central">전용 망</text></g>
+  <text class="ts" x="200" y="148" text-anchor="middle" style="fill:var(--color-text-tertiary)">온프레미스처럼 완전 통제</text>
+  <text class="ts" x="200" y="164" text-anchor="middle" style="fill:var(--color-text-tertiary)">but 클라우드 유연성 보유</text>
+  <rect x="380" y="52" width="240" height="80" rx="8" fill="var(--color-background-secondary)" stroke="var(--color-border-tertiary)" stroke-width="0.5"/>
+  <text class="ts" x="500" y="72" text-anchor="middle" style="fill:var(--color-text-secondary)">외부에서 접근 불가</text>
+  <text class="ts" x="500" y="90" text-anchor="middle" style="fill:var(--color-text-secondary)">인가된 내부 사용자만 접속</text>
+  <text class="ts" x="500" y="108" text-anchor="middle" style="fill:var(--color-text-secondary)">물리 서버: 사내 or 전용 IDC</text>
+  <text class="ts" x="500" y="126" text-anchor="middle" style="fill:var(--color-text-secondary)">운영: 직접 or 위탁</text>
+</svg>
+<div class="meta-row">
+  <div class="meta"><div class="mv" style="color:#E24B4A">높음</div><div class="ml">초기 비용</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">매우 높음</div><div class="ml">보안·통제권</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">중간</div><div class="ml">확장 유연성</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">보통</div><div class="ml">구축 속도</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">고정+α</div><div class="ml">운영비 구조</div></div>
+</div>
+<div class="pros-cons">
+  <div class="pc" style="background:var(--color-background-success)">
+    <div class="pc-title" style="color:var(--color-text-success)">장점</div>
+    <div class="pc-item"><span class="dot-g"></span><span>온프레미스 보안 + 클라우드 유연성 동시</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>데이터가 외부로 절대 안 나감</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>규정 준수(컴플라이언스)에 최적</span></div>
+  </div>
+  <div class="pc" style="background:var(--color-background-danger)">
+    <div class="pc-title" style="color:var(--color-text-danger)">단점</div>
+    <div class="pc-item"><span class="dot-r"></span><span>퍼블릭보다 훨씬 비쌈</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>구축·유지 전문 인력 필요</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>무한 확장은 불가 (물리 한계 존재)</span></div>
+  </div>
+</div>
+<div class="who-box" style="background:var(--color-background-secondary);color:var(--color-text-secondary)">
+  <strong style="color:var(--color-text-primary)">주로 쓰는 곳:</strong> 금융 규제로 외부 클라우드 사용이 제한된 은행·보험사, 환자 데이터 보호가 필요한 대형 병원, 공공기관.
+</div>
+</div>
+
+<!-- 하이브리드 -->
+<div class="pn" id="p3">
+<svg width="100%" viewBox="0 0 680 210">
+<defs><marker id="ha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- On-prem left -->
+  <rect x="20" y="20" width="240" height="130" rx="10" fill="var(--color-background-secondary)" stroke="var(--color-border-secondary)" stroke-width="1" stroke-dasharray="5 3"/>
+  <text class="th" x="140" y="44" text-anchor="middle" style="fill:var(--color-text-secondary)">사내 (온프레미스·프라이빗)</text>
+  <g class="c-gray"><rect x="36" y="56" width="96" height="40" rx="6" stroke-width="0.5"/><text class="th" x="84" y="72" text-anchor="middle" dominant-baseline="central" style="font-size:11px">핵심 데이터</text><text class="ts" x="84" y="88" text-anchor="middle" dominant-baseline="central">개인정보·기밀</text></g>
+  <g class="c-gray"><rect x="144" y="56" width="96" height="40" rx="6" stroke-width="0.5"/><text class="th" x="192" y="72" text-anchor="middle" dominant-baseline="central" style="font-size:11px">레거시 시스템</text><text class="ts" x="192" y="88" text-anchor="middle" dominant-baseline="central">ERP·메인프레임</text></g>
+  <text class="ts" x="140" y="136" text-anchor="middle" style="fill:var(--color-text-tertiary)">보안 필요 자산 = 내부 보관</text>
+  <!-- Bridge -->
+  <path d="M260 85 L290 85 M390 85 L420 85" fill="none" stroke="#1D9E75" stroke-width="2" marker-end="url(#ha)" marker-start="url(#ha)"/>
+  <rect x="272" y="70" width="96" height="30" rx="6" fill="var(--color-background-success)" stroke="#1D9E75" stroke-width="0.5"/>
+  <text class="th" x="320" y="85" text-anchor="middle" dominant-baseline="central" style="fill:#0F6E56;font-size:11px">전용 연결망</text>
+  <!-- Public right -->
+  <rect x="420" y="20" width="240" height="130" rx="10" fill="var(--color-background-info)" stroke="#185FA5" stroke-width="0.5" opacity="0.5"/>
+  <text class="th" x="540" y="44" text-anchor="middle" style="fill:#185FA5">퍼블릭 클라우드</text>
+  <g class="c-blue"><rect x="436" y="56" width="96" height="40" rx="6" stroke-width="0.5"/><text class="th" x="484" y="72" text-anchor="middle" dominant-baseline="central" style="font-size:11px">웹서버·앱</text><text class="ts" x="484" y="88" text-anchor="middle" dominant-baseline="central">일반 서비스</text></g>
+  <g class="c-blue"><rect x="544" y="56" width="96" height="40" rx="6" stroke-width="0.5"/><text class="th" x="592" y="72" text-anchor="middle" dominant-baseline="central" style="font-size:11px">분석·AI</text><text class="ts" x="592" y="88" text-anchor="middle" dominant-baseline="central">탄력 확장</text></g>
+  <text class="ts" x="540" y="136" text-anchor="middle" style="fill:#185FA5">비민감 데이터 = 클라우드 활용</text>
+  <!-- Caption -->
+  <text class="ts" x="340" y="180" text-anchor="middle" style="fill:var(--color-text-tertiary)">핵심은 "분리" — 민감한 건 안에, 빠르게 처리할 건 밖에</text>
+  <text class="ts" x="340" y="196" text-anchor="middle" style="fill:var(--color-text-tertiary)">두 환경이 전용 네트워크로 연결되어 하나처럼 작동</text>
+</svg>
+<div class="meta-row">
+  <div class="meta"><div class="mv" style="color:#BA7517">중간</div><div class="ml">초기 비용</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">높음</div><div class="ml">보안·통제권</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">높음</div><div class="ml">확장 유연성</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">보통</div><div class="ml">구축 복잡도</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">혼합</div><div class="ml">운영비 구조</div></div>
+</div>
+<div class="pros-cons">
+  <div class="pc" style="background:var(--color-background-success)">
+    <div class="pc-title" style="color:var(--color-text-success)">장점</div>
+    <div class="pc-item"><span class="dot-g"></span><span>보안·규제 준수 + 클라우드 유연성 동시</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>트래픽 급증 시 클라우드 쪽만 확장</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>기존 레거시 시스템 유지하면서 전환</span></div>
+  </div>
+  <div class="pc" style="background:var(--color-background-danger)">
+    <div class="pc-title" style="color:var(--color-text-danger)">단점</div>
+    <div class="pc-item"><span class="dot-r"></span><span>두 환경을 연결·관리하는 복잡성 ↑</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>전용 연결망 구축 비용 추가</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>MSP 같은 전문 관리 파트너 거의 필수</span></div>
+  </div>
+</div>
+<div class="who-box" style="background:var(--color-background-warning);color:var(--color-text-warning)">
+  <strong style="color:var(--color-text-primary)">주로 쓰는 곳:</strong> 금융사(고객 개인정보는 사내, 앱 서비스는 AWS), 제조업(ERP는 사내, 분석·IoT는 클라우드). 국내 대기업 상당수가 이 구조. 메가존이 가장 많이 지원하는 형태.
+</div>
+</div>
+
+<!-- 멀티 클라우드 -->
+<div class="pn" id="p4">
+<svg width="100%" viewBox="0 0 680 210">
+<defs><marker id="ma" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+  <!-- AWS -->
+  <g class="c-blue"><rect x="20" y="20" width="136" height="80" rx="8" stroke-width="0.5"/><text class="th" x="88" y="48" text-anchor="middle" dominant-baseline="central">AWS</text><text class="ts" x="88" y="70" text-anchor="middle" dominant-baseline="central">범용 인프라</text><text class="ts" x="88" y="86" text-anchor="middle" dominant-baseline="central">Compute · DB</text></g>
+  <!-- GCP -->
+  <g class="c-teal"><rect x="176" y="20" width="136" height="80" rx="8" stroke-width="0.5"/><text class="th" x="244" y="48" text-anchor="middle" dominant-baseline="central">GCP</text><text class="ts" x="244" y="70" text-anchor="middle" dominant-baseline="central">AI·BigQuery</text><text class="ts" x="244" y="86" text-anchor="middle" dominant-baseline="central">머신러닝 특화</text></g>
+  <!-- Azure -->
+  <g class="c-purple"><rect x="332" y="20" width="136" height="80" rx="8" stroke-width="0.5"/><text class="th" x="400" y="48" text-anchor="middle" dominant-baseline="central">Azure</text><text class="ts" x="400" y="70" text-anchor="middle" dominant-baseline="central">MS 365 연동</text><text class="ts" x="400" y="86" text-anchor="middle" dominant-baseline="central">Identity 관리</text></g>
+  <!-- 기타 -->
+  <g class="c-gray"><rect x="488" y="20" width="136" height="80" rx="8" stroke-width="0.5"/><text class="th" x="556" y="48" text-anchor="middle" dominant-baseline="central">기타 CSP</text><text class="ts" x="556" y="70" text-anchor="middle" dominant-baseline="central">알리바바·네이버</text><text class="ts" x="556" y="86" text-anchor="middle" dominant-baseline="central">지역 특화</text></g>
+  <!-- Arrows to hub -->
+  <line x1="88" y1="100" x2="88" y2="138" stroke="#888780" stroke-width="1" marker-end="url(#ma)"/>
+  <line x1="244" y1="100" x2="244" y2="138" stroke="#888780" stroke-width="1" marker-end="url(#ma)"/>
+  <line x1="400" y1="100" x2="400" y2="138" stroke="#888780" stroke-width="1" marker-end="url(#ma)"/>
+  <line x1="556" y1="100" x2="556" y2="138" stroke="#888780" stroke-width="1" marker-end="url(#ma)"/>
+  <!-- Hub: 통합 관리 (메가존의 역할) -->
+  <rect x="60" y="140" width="560" height="44" rx="8" fill="var(--color-background-secondary)" stroke="#1D9E75" stroke-width="1.5"/>
+  <text class="th" x="340" y="156" text-anchor="middle" dominant-baseline="central" style="fill:#0F6E56">통합 관리 플랫폼 (Single Pane of Glass)</text>
+  <text class="ts" x="340" y="174" text-anchor="middle" dominant-baseline="central" style="fill:#0F6E56">SpaceONE 같은 MSP 솔루션이 여러 클라우드를 하나의 화면에서 관리</text>
+</svg>
+<div class="meta-row">
+  <div class="meta"><div class="mv" style="color:#BA7517">높음</div><div class="ml">초기 설계 복잡도</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">최강</div><div class="ml">벤더 협상력</div></div>
+  <div class="meta"><div class="mv" style="color:#1D9E75">무제한</div><div class="ml">확장 유연성</div></div>
+  <div class="meta"><div class="mv" style="color:#E24B4A">매우 높음</div><div class="ml">운영 복잡도</div></div>
+  <div class="meta"><div class="mv" style="color:#BA7517">최적화 가능</div><div class="ml">비용 구조</div></div>
+</div>
+<div class="pros-cons">
+  <div class="pc" style="background:var(--color-background-success)">
+    <div class="pc-title" style="color:var(--color-text-success)">장점</div>
+    <div class="pc-item"><span class="dot-g"></span><span>AWS 가격 올리면 → GCP로 옮기면 그만 (협상력)</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>각 CSP의 최강점만 골라 쓸 수 있음</span></div>
+    <div class="pc-item"><span class="dot-g"></span><span>특정 CSP 장애에도 서비스 지속 가능</span></div>
+  </div>
+  <div class="pc" style="background:var(--color-background-danger)">
+    <div class="pc-title" style="color:var(--color-text-danger)">단점</div>
+    <div class="pc-item"><span class="dot-r"></span><span>여러 클라우드를 동시에 관리 — 매우 복잡</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>데이터 이동 비용(Egress 요금) 발생</span></div>
+    <div class="pc-item"><span class="dot-r"></span><span>SpaceONE 같은 통합 관리 툴 필수</span></div>
+  </div>
+</div>
+<div class="who-box" style="background:var(--color-background-info);color:var(--color-text-info)">
+  <strong style="color:var(--color-text-primary)">주로 쓰는 곳:</strong> 글로벌 대기업, 넷플릭스·애플 같은 초대형 플랫폼, 한 CSP에 종속되기 싫은 금융사. 국내 기업 93%가 멀티클라우드 전략을 보유 중 — 메가존의 SpaceONE이 가장 필요한 환경.
+</div>
+</div>
+
+</div>
+<script>
+function go(i){
+  document.querySelectorAll('.pn').forEach((p,j)=>p.classList.toggle('on',i===j));
+  document.querySelectorAll('.np').forEach((b,j)=>b.classList.toggle('on',i===j));
+}
+</script>
