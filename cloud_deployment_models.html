@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라우드 배포 모델 완전 가이드</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', -apple-system, sans-serif;
+    background: #f7f6f2;
+    color: #1a1a18;
+    min-height: 100vh;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .container { max-width: 860px; margin: 0 auto; }
+
+  h1 {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #1a1a18;
+  }
+  .subtitle {
+    font-size: 13px;
+    color: #73726c;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+
+  /* Nav pills */
+  .nav-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .np {
+    padding: 8px 14px;
+    border: 1px solid #d3d1c7;
+    background: #ffffff;
+    color: #73726c;
+    font-size: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all .18s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+  .np:hover { background: #f0ede6; border-color: #b4b2a9; }
+  .np.on {
+    background: #1a1a18;
+    color: #f7f6f2;
+    border-color: #1a1a18;
+    font-weight: 500;
+  }
+
+  /* Panels */
+  .panel { display: none; }
+  .panel.on { display: block; }
+
+  /* Diagram box */
+  .diagram-box {
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  .diagram-box svg { display: block; width: 100%; }
+
+  /* Meta row */
+  .meta-row {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 14px;
+    flex-wrap: wrap;
+  }
+  .meta {
+    flex: 1;
+    min-width: 80px;
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .meta .mv { font-size: 13px; font-weight: 600; }
+  .meta .ml { font-size: 10px; color: #73726c; margin-top: 3px; line-height: 1.4; }
+
+  /* Pros cons */
+  .pros-cons { display: flex; gap: 8px; margin-bottom: 12px; }
+  .pc { flex: 1; border-radius: 8px; padding: 12px 13px; }
+  .pc-title { font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+  .pc-item { font-size: 12px; color: #444441; padding: 3px 0; line-height: 1.6; display: flex; gap: 6px; align-items: flex-start; }
+  .dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+
+  .pc-good { background: #eaf3de; }
+  .pc-good .pc-title { color: #3b6d11; }
+  .pc-bad { background: #fcebeb; }
+  .pc-bad .pc-title { color: #a32d2d; }
+
+  /* Who box */
+  .who-box {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    border: 1px solid #d3d1c7;
+  }
+  .who-box strong { font-weight: 600; }
+
+  /* Description */
+  .desc {
+    font-size: 13px;
+    color: #5f5e5a;
+    margin-bottom: 14px;
+    line-height: 1.7;
+    background: #ffffff;
+    border: 1px solid #d3d1c7;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .desc strong { color: #1a1a18; font-weight: 600; }
+
+  /* Section label */
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <h1>클라우드 배포 모델 완전 가이드</h1>
+  <p class="subtitle">온프레미스부터 멀티 클라우드까지 — 각 모델의 구조, 장단점, 실제 사용 사례</p>
+
+  <div class="nav-pills">
+    <button class="np on" onclick="go(0)">온프레미스</button>
+    <button class="np" onclick="go(1)">퍼블릭 클라우드</button>
+    <button class="np" onclick="go(2)">프라이빗 클라우드</button>
+    <button class="np" onclick="go(3)">하이브리드 클라우드</button>
+    <button class="np" onclick="go(4)">멀티 클라우드</button>
+  </div>
+
+  <!-- ① 온프레미스 -->
+  <div class="panel on" id="p0">
+    <div class="desc"><strong>핵심 비유:</strong> 회사 안에 직접 짓는 <strong>전용 발전소</strong>. 전기부터 배선까지 100% 내 책임이지만 완벽한 통제권을 갖습니다.</div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Company boundary -->
+        <rect x="30" y="16" width="620" height="148" rx="12" fill="#f7f6f2" stroke="#b4b2a9" stroke-width="1.5" stroke-dasharray="8 4"/>
+        <text x="56" y="40" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#888780">우리 회사 건물 (사내 — 외부 접근 불가)</text>
+        <!-- Boxes -->
+        <rect x="52" y="54" width="120" height="60" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+        <text x="112" y="79" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#444441">서버실</text>
+        <text x="112" y="98" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">직접 구매</text>
+
+        <rect x="190" y="54" width="120" height="60" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+        <text x="250" y="79" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#444441">네트워크</text>
+        <text x="250" y="98" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">직접 구축</text>
+
+        <rect x="328" y="54" width="120" height="60" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+        <text x="388" y="79" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#444441">스토리지</text>
+        <text x="388" y="98" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">직접 관리</text>
+
+        <rect x="466" y="54" width="148" height="60" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+        <text x="540" y="79" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#444441">보안·운영팀</text>
+        <text x="540" y="98" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">직접 고용</text>
+
+        <text x="340" y="140" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" fill="#888780">모든 인프라를 회사가 직접 소유 · 운영 — 인터넷 없이도 작동</text>
+        <text x="340" y="158" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#b4b2a9">비유: 회사 안에 직접 지은 전용 발전소</text>
+      </svg>
+    </div>
+    <div class="meta-row">
+      <div class="meta"><div class="mv" style="color:#a32d2d">매우 높음</div><div class="ml">초기 비용 (CAPEX)</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">최고</div><div class="ml">보안·통제권</div></div>
+      <div class="meta"><div class="mv" style="color:#a32d2d">매우 낮음</div><div class="ml">확장 유연성</div></div>
+      <div class="meta"><div class="mv" style="color:#a32d2d">느림</div><div class="ml">구축 속도</div></div>
+      <div class="meta"><div class="mv" style="color:#888780">사용량 무관</div><div class="ml">운영비 구조</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <div class="pc-title">장점</div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>완전한 통제권 — 데이터가 외부로 절대 나가지 않음</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>인터넷 없어도 운영 가능</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>장기적으로 쓰면 운영비 예측 가능</span></div>
+      </div>
+      <div class="pc pc-bad">
+        <div class="pc-title">단점</div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>서버 살 때 수십억 초기 투자 필요</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>갑자기 트래픽 폭발하면 대응 불가</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>유지보수 인력 내부에 계속 필요</span></div>
+      </div>
+    </div>
+    <div class="who-box" style="background:#f1efe8; border-color:#d3d1c7;">
+      <strong>주로 쓰는 곳:</strong> 국방·금융·병원 등 데이터가 외부로 절대 나가면 안 되는 규제 산업. 또는 이미 대규모 인프라에 투자한 제조업 대기업.
+    </div>
+  </div>
+
+  <!-- ② 퍼블릭 클라우드 -->
+  <div class="panel" id="p1">
+    <div class="desc"><strong>핵심 비유:</strong> 한국전력에서 콘센트 꽂아 쓰는 것. 발전소(서버)는 AWS가 갖고 있고, 우리는 <strong>쓴 만큼만 요금을 냅니다.</strong></div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- AWS Zone -->
+        <rect x="30" y="16" width="620" height="90" rx="12" fill="#e6f1fb" stroke="#185fa5" stroke-width="1" opacity="0.7"/>
+        <text x="56" y="40" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#185fa5">AWS / Azure / GCP 데이터센터 (전 세계)</text>
+
+        <rect x="50" y="50" width="100" height="40" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="100" y="68" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">서버 수백만 대</text>
+        <text x="100" y="82" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">Compute</text>
+
+        <rect x="162" y="50" width="100" height="40" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="212" y="68" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">스토리지 무한</text>
+        <text x="212" y="82" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">S3 · Blob</text>
+
+        <rect x="274" y="50" width="100" height="40" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="324" y="68" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">AI · ML</text>
+        <text x="324" y="82" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">SageMaker 등</text>
+
+        <rect x="386" y="50" width="100" height="40" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="436" y="68" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">보안·운영</text>
+        <text x="436" y="82" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">AWS 책임</text>
+
+        <rect x="498" y="50" width="132" height="40" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="564" y="68" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">200+ 서비스</text>
+        <text x="564" y="82" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">클릭 몇 번에 사용</text>
+
+        <!-- Arrow down -->
+        <line x1="340" y1="106" x2="340" y2="136" stroke="#185fa5" stroke-width="2" stroke-dasharray="5 3"/>
+        <polygon points="334,136 346,136 340,146" fill="#185fa5"/>
+        <text x="370" y="122" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#185fa5">인터넷으로 접속</text>
+
+        <!-- Customer box -->
+        <rect x="220" y="148" width="240" height="42" rx="8" fill="#ffffff" stroke="#d3d1c7" stroke-width="1"/>
+        <text x="340" y="166" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#1a1a18">우리 회사</text>
+        <text x="340" y="182" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#73726c">로그인만 하면 사용 · 쓴 만큼만 요금</text>
+      </svg>
+    </div>
+    <div class="meta-row">
+      <div class="meta"><div class="mv" style="color:#3b6d11">거의 없음</div><div class="ml">초기 비용</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">보통</div><div class="ml">보안·통제권</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">무제한</div><div class="ml">확장 유연성</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">즉시</div><div class="ml">구축 속도</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">종량제</div><div class="ml">운영비 구조</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <div class="pc-title">장점</div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>초기 투자 0원 — 로그인하면 바로 사용</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>서버 1대 → 10,000대 확장 5분</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>전 세계 어디서든 접근 가능</span></div>
+      </div>
+      <div class="pc pc-bad">
+        <div class="pc-title">단점</div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>잘못 쓰면 요금 폭탄 (FinOps 관리 필수)</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>인터넷 끊기면 서비스 중단</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>데이터가 외부(AWS 서버)에 저장됨</span></div>
+      </div>
+    </div>
+    <div class="who-box" style="background:#e6f1fb; border-color:#b5d4f4;">
+      <strong>주로 쓰는 곳:</strong> 스타트업, 빠른 성장이 필요한 서비스, 트래픽 변동이 큰 이커머스·게임. 직방·카카오·넥슨 등이 대표 사례.
+    </div>
+  </div>
+
+  <!-- ③ 프라이빗 클라우드 -->
+  <div class="panel" id="p2">
+    <div class="desc"><strong>핵심 비유:</strong> 우리 건물 안에 짓는 <strong>미니 AWS</strong>. 클라우드 기술(가상화·자동화)은 쓰지만, 장비는 우리 소유, 외부에서 접근 불가.</div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 190" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer boundary -->
+        <rect x="30" y="16" width="620" height="158" rx="12" fill="#f7f6f2" stroke="#888780" stroke-width="1.5" stroke-dasharray="8 4"/>
+        <text x="56" y="40" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#888780">우리 회사 전용 클라우드 환경 (외부 접근 차단)</text>
+
+        <!-- Inner cloud zone -->
+        <rect x="50" y="50" width="300" height="90" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="1.5"/>
+        <text x="200" y="72" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#534ab7">클라우드 기술 적용 (가상화·자동화)</text>
+
+        <rect x="66" y="82" width="80" height="44" rx="6" fill="#cecbf6" stroke="#534ab7" stroke-width="1"/>
+        <text x="106" y="101" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#26215c">가상서버</text>
+        <text x="106" y="117" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#534ab7">VM 자동화</text>
+
+        <rect x="158" y="82" width="90" height="44" rx="6" fill="#cecbf6" stroke="#534ab7" stroke-width="1"/>
+        <text x="203" y="101" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#26215c">전용 스토리지</text>
+        <text x="203" y="117" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#534ab7">사내 저장소</text>
+
+        <rect x="260" y="82" width="80" height="44" rx="6" fill="#cecbf6" stroke="#534ab7" stroke-width="1"/>
+        <text x="300" y="101" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#26215c">전용 망</text>
+        <text x="300" y="117" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#534ab7">내부 전용</text>
+
+        <!-- Control panel -->
+        <rect x="374" y="50" width="256" height="90" rx="8" fill="#ffffff" stroke="#d3d1c7" stroke-width="1"/>
+        <text x="502" y="74" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#1a1a18">특징</text>
+        <text x="502" y="92" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#5f5e5a">외부에서 접근 불가</text>
+        <text x="502" y="108" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#5f5e5a">물리 서버: 사내 or 전용 IDC</text>
+        <text x="502" y="124" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#5f5e5a">운영: 직접 or 전문업체 위탁</text>
+
+        <text x="340" y="162" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">온프레미스의 보안 + 클라우드의 유연성을 동시에</text>
+      </svg>
+    </div>
+    <div class="meta-row">
+      <div class="meta"><div class="mv" style="color:#a32d2d">높음</div><div class="ml">초기 비용</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">매우 높음</div><div class="ml">보안·통제권</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">중간</div><div class="ml">확장 유연성</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">보통</div><div class="ml">구축 속도</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">고정+α</div><div class="ml">운영비 구조</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <div class="pc-title">장점</div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>온프레미스 보안 + 클라우드 유연성 동시 확보</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>데이터가 외부로 절대 나가지 않음</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>규제·컴플라이언스 준수에 최적</span></div>
+      </div>
+      <div class="pc pc-bad">
+        <div class="pc-title">단점</div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>퍼블릭보다 구축·운영 비용이 훨씬 비쌈</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>전문 엔지니어 인력 필요</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>무한 확장은 불가 (물리 용량 한계 존재)</span></div>
+      </div>
+    </div>
+    <div class="who-box" style="background:#f1efe8; border-color:#d3d1c7;">
+      <strong>주로 쓰는 곳:</strong> 금융 규제로 외부 클라우드 사용이 제한된 은행·보험사, 환자 데이터 보호가 필요한 대형 병원, 공공기관.
+    </div>
+  </div>
+
+  <!-- ④ 하이브리드 -->
+  <div class="panel" id="p3">
+    <div class="desc"><strong>핵심 비유:</strong> 우리 발전소 + 한전을 동시에 씁니다. <strong>민감한 데이터는 안에, 빠른 처리가 필요한 건 클라우드로.</strong> 둘이 전용선으로 연결되어 하나처럼 작동.</div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 210" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#1d9e75" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <!-- On-prem left -->
+        <rect x="20" y="20" width="246" height="130" rx="10" fill="#f1efe8" stroke="#888780" stroke-width="1.5" stroke-dasharray="6 3"/>
+        <text x="143" y="44" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#5f5e5a">사내 (온프레미스·프라이빗)</text>
+
+        <rect x="36" y="56" width="100" height="48" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="1"/>
+        <text x="86" y="76" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#2c2c2a">핵심 데이터</text>
+        <text x="86" y="93" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#5f5e5a">개인정보·기밀</text>
+
+        <rect x="148" y="56" width="100" height="48" rx="6" fill="#d3d1c7" stroke="#888780" stroke-width="1"/>
+        <text x="198" y="76" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#2c2c2a">레거시 시스템</text>
+        <text x="198" y="93" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#5f5e5a">ERP·메인프레임</text>
+
+        <text x="143" y="138" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">보안 필요 자산 = 내부</text>
+
+        <!-- Bridge -->
+        <rect x="278" y="62" width="124" height="36" rx="6" fill="#eaf3de" stroke="#1d9e75" stroke-width="1.5"/>
+        <text x="340" y="80" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#085041">전용 연결망</text>
+        <text x="340" y="94" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#1d9e75">Direct Connect</text>
+        <line x1="266" y1="80" x2="276" y2="80" stroke="#1d9e75" stroke-width="2" marker-end="url(#arrowG)"/>
+        <line x1="404" y1="80" x2="414" y2="80" stroke="#1d9e75" stroke-width="2" marker-end="url(#arrowG)"/>
+
+        <!-- Public right -->
+        <rect x="414" y="20" width="246" height="130" rx="10" fill="#e6f1fb" stroke="#185fa5" stroke-width="1" opacity="0.8"/>
+        <text x="537" y="44" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="600" fill="#185fa5">퍼블릭 클라우드</text>
+
+        <rect x="430" y="56" width="100" height="48" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="480" y="76" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">웹서버·앱</text>
+        <text x="480" y="93" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">일반 서비스</text>
+
+        <rect x="542" y="56" width="100" height="48" rx="6" fill="#b5d4f4" stroke="#185fa5" stroke-width="1"/>
+        <text x="592" y="76" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" font-weight="600" fill="#0c447c">분석·AI</text>
+        <text x="592" y="93" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">탄력 확장</text>
+
+        <text x="537" y="138" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#185fa5">비민감 데이터 = 클라우드</text>
+
+        <!-- Caption -->
+        <text x="340" y="175" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" fill="#5f5e5a">핵심: "분리" — 민감한 건 안에, 빠르게 처리할 건 밖에</text>
+        <text x="340" y="193" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">두 환경이 전용 네트워크로 연결 → 하나처럼 작동</text>
+      </svg>
+    </div>
+    <div class="meta-row">
+      <div class="meta"><div class="mv" style="color:#854f0b">중간</div><div class="ml">초기 비용</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">높음</div><div class="ml">보안·통제권</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">높음</div><div class="ml">확장 유연성</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">보통</div><div class="ml">구축 복잡도</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">혼합</div><div class="ml">운영비 구조</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <div class="pc-title">장점</div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>보안·규제 준수 + 클라우드 유연성 동시</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>트래픽 급증 시 클라우드 쪽만 확장</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>기존 레거시 시스템 유지하면서 단계적 전환 가능</span></div>
+      </div>
+      <div class="pc pc-bad">
+        <div class="pc-title">단점</div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>두 환경 연결·관리하는 복잡성 증가</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>전용 연결망(Direct Connect) 구축 비용 추가</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>MSP 같은 전문 관리 파트너 거의 필수</span></div>
+      </div>
+    </div>
+    <div class="who-box" style="background:#faeeda; border-color:#fac775;">
+      <strong>주로 쓰는 곳:</strong> 금융사(고객 개인정보는 사내, 앱 서비스는 AWS), 제조업(ERP는 사내, 분석·IoT는 클라우드). 국내 대기업 상당수가 이 구조. 메가존이 가장 많이 지원하는 형태.
+    </div>
+  </div>
+
+  <!-- ⑤ 멀티 클라우드 -->
+  <div class="panel" id="p4">
+    <div class="desc"><strong>핵심 비유:</strong> 한전 + 남부발전 + GS에너지를 동시에 씁니다. <strong>각 회사의 장점만 골라 쓰고, 한 곳에 종속되지 않습니다.</strong></div>
+    <div class="diagram-box">
+      <svg viewBox="0 0 680 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrowD" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#888780" stroke-width="1.5" stroke-linecap="round"/>
+          </marker>
+        </defs>
+        <!-- AWS -->
+        <rect x="20" y="14" width="140" height="80" rx="8" fill="#e6f1fb" stroke="#185fa5" stroke-width="1"/>
+        <text x="90" y="38" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="13" font-weight="700" fill="#0c447c">AWS</text>
+        <text x="90" y="57" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#185fa5">범용 인프라</text>
+        <text x="90" y="73" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#185fa5">Compute · DB</text>
+        <!-- GCP -->
+        <rect x="180" y="14" width="140" height="80" rx="8" fill="#e1f5ee" stroke="#1d9e75" stroke-width="1"/>
+        <text x="250" y="38" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="13" font-weight="700" fill="#085041">GCP</text>
+        <text x="250" y="57" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#1d9e75">AI · BigQuery</text>
+        <text x="250" y="73" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#1d9e75">머신러닝 특화</text>
+        <!-- Azure -->
+        <rect x="340" y="14" width="140" height="80" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="1"/>
+        <text x="410" y="38" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="13" font-weight="700" fill="#26215c">Azure</text>
+        <text x="410" y="57" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#534ab7">MS 365 연동</text>
+        <text x="410" y="73" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#534ab7">Identity 관리</text>
+        <!-- 기타 -->
+        <rect x="500" y="14" width="160" height="80" rx="8" fill="#f1efe8" stroke="#888780" stroke-width="1"/>
+        <text x="580" y="38" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="700" fill="#444441">기타 CSP</text>
+        <text x="580" y="57" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">알리바바·네이버</text>
+        <text x="580" y="73" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="10" fill="#888780">지역 특화</text>
+
+        <!-- Arrows down -->
+        <line x1="90" y1="94" x2="90" y2="118" stroke="#888780" stroke-width="1" marker-end="url(#arrowD)"/>
+        <line x1="250" y1="94" x2="250" y2="118" stroke="#888780" stroke-width="1" marker-end="url(#arrowD)"/>
+        <line x1="410" y1="94" x2="410" y2="118" stroke="#888780" stroke-width="1" marker-end="url(#arrowD)"/>
+        <line x1="580" y1="94" x2="580" y2="118" stroke="#888780" stroke-width="1" marker-end="url(#arrowD)"/>
+
+        <!-- Hub -->
+        <rect x="20" y="120" width="640" height="50" rx="8" fill="#eaf3de" stroke="#1d9e75" stroke-width="2"/>
+        <text x="340" y="141" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="12" font-weight="700" fill="#085041">통합 관리 플랫폼 — Single Pane of Glass</text>
+        <text x="340" y="158" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#1d9e75">SpaceONE 같은 MSP 솔루션이 여러 클라우드를 하나의 화면에서 통합 관리</text>
+
+        <text x="340" y="190" text-anchor="middle" font-family="'Apple SD Gothic Neo','Malgun Gothic',sans-serif" font-size="11" fill="#888780">각 CSP의 최강점만 조합 · 벤더 종속 탈피 · 협상력 극대화</text>
+      </svg>
+    </div>
+    <div class="meta-row">
+      <div class="meta"><div class="mv" style="color:#854f0b">높음</div><div class="ml">설계 복잡도</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">최강</div><div class="ml">벤더 협상력</div></div>
+      <div class="meta"><div class="mv" style="color:#3b6d11">무제한</div><div class="ml">확장 유연성</div></div>
+      <div class="meta"><div class="mv" style="color:#a32d2d">매우 높음</div><div class="ml">운영 복잡도</div></div>
+      <div class="meta"><div class="mv" style="color:#854f0b">최적화 가능</div><div class="ml">비용 구조</div></div>
+    </div>
+    <div class="pros-cons">
+      <div class="pc pc-good">
+        <div class="pc-title">장점</div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>AWS 가격 올리면 GCP로 이동 가능 (협상력)</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>각 CSP의 특화 기능만 골라서 사용</span></div>
+        <div class="pc-item"><span class="dot" style="background:#3b6d11"></span><span>특정 CSP 장애에도 서비스 지속 가능</span></div>
+      </div>
+      <div class="pc pc-bad">
+        <div class="pc-title">단점</div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>여러 클라우드 동시 관리 — 매우 복잡</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>데이터 이동 비용(Egress 요금) 발생</span></div>
+        <div class="pc-item"><span class="dot" style="background:#a32d2d"></span><span>SpaceONE 같은 통합 관리 툴 필수</span></div>
+      </div>
+    </div>
+    <div class="who-box" style="background:#e6f1fb; border-color:#b5d4f4;">
+      <strong>주로 쓰는 곳:</strong> 글로벌 대기업, 한 CSP에 종속되기 싫은 금융사. 국내 기업 93%가 멀티클라우드 전략 보유 — 메가존의 SpaceONE이 가장 필요한 환경.
+    </div>
+  </div>
+
+</div>
+
+<script>
+function go(i) {
+  document.querySelectorAll('.panel').forEach((p, j) => p.classList.toggle('on', i === j));
+  document.querySelectorAll('.np').forEach((b, j) => b.classList.toggle('on', i === j));
+}
+</script>
+</body>
+</html>
