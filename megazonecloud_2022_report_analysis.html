@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>메가존클라우드 — IPO 분석 보고서</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fb;--bg2:#ffffff;--bg3:#eef1f8;--border:#d8dde8;--border2:#c2c9d8;--text:#1a2033;--text2:#4a5472;--text3:#8a94aa;--blue:#1a5fdf;--blue-bg:#e8f0fd;--teal:#0a9e80;--teal-bg:#e0f7f3;--amber:#b87000;--amber-bg:#fff3d6;--coral:#c83028;--coral-bg:#fdecea;--green:#1a8a4a;--green-bg:#e4f7ec;--purple:#6b3fcf;--purple-bg:#f0eafd;--gray-bg:#f0f2f7;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;font-size:15px;line-height:1.7;overflow-x:hidden;}
+header{background:linear-gradient(135deg,#0d2560 0%,#1845a0 55%,#1060c0 100%);color:#fff;padding:60px 60px 48px;position:relative;overflow:hidden;}
+header::after{content:'';position:absolute;top:-80px;right:-80px;width:420px;height:420px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%);pointer-events:none;}
+.header-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;}
+header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,92px);letter-spacing:2px;line-height:1;color:#fff;margin-bottom:4px;}
+header h1 span{color:#80b8ff;}
+.header-sub{font-size:14px;color:rgba(255,255,255,0.7);margin-top:8px;}
+.header-meta{display:flex;gap:28px;margin-top:32px;flex-wrap:wrap;}
+.meta-item{display:flex;flex-direction:column;gap:3px;}
+.meta-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:2px;}
+.meta-value{font-size:22px;font-weight:700;color:#fff;}
+.meta-value.acc{color:#80b8ff;}
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);padding:0 60px;display:flex;gap:0;overflow-x:auto;}
+nav a{padding:13px 16px;font-size:12px;font-weight:500;color:var(--text2);text-decoration:none;letter-spacing:.3px;white-space:nowrap;border-bottom:2px solid transparent;transition:all .2s;}
+nav a:hover{color:var(--blue);border-color:var(--blue);}
+section{padding:56px 60px;border-bottom:1px solid var(--border);}
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:5px;}
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,42px);letter-spacing:1px;color:var(--text);margin-bottom:24px;}
+h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:9px;}
+p{color:var(--text2);}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-bottom:32px;}
+.kpi{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:18px;text-align:center;}
+.kpi-val{font-family:'Bebas Neue',sans-serif;font-size:36px;line-height:1;margin-bottom:4px;}
+.kpi-lbl{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.3px;}
+.card-grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:20px;transition:all .2s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--ca,var(--blue));}
+.card:hover{box-shadow:0 4px 18px rgba(0,0,0,0.09);transform:translateY(-2px);}
+.card-icon{font-size:20px;margin-bottom:8px;}
+.card p{font-size:13px;color:var(--text2);margin-top:5px;}
+.badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:500;font-family:'JetBrains Mono',monospace;}
+.bl{background:var(--blue-bg);color:var(--blue);}
+.bt{background:var(--teal-bg);color:var(--teal);}
+.ba{background:var(--amber-bg);color:var(--amber);}
+.bc{background:var(--coral-bg);color:var(--coral);}
+.bg2{background:var(--green-bg);color:var(--green);}
+.bp{background:var(--purple-bg);color:var(--purple);}
+.bgr{background:var(--gray-bg);color:var(--text2);}
+.layer{border-radius:9px;padding:13px 18px;margin-bottom:6px;display:flex;align-items:flex-start;gap:14px;border:1px solid;transition:all .2s;}
+.layer:hover{transform:translateX(3px);}
+.layer-name{font-weight:700;font-size:13px;min-width:105px;padding-top:2px;}
+.layer-items{display:flex;flex-wrap:wrap;gap:5px;flex:1;}
+.layer-tier{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);white-space:nowrap;padding-top:3px;}
+.layer-arrow{text-align:center;color:var(--text3);font-size:14px;margin:1px 0 1px 18px;}
+.svc-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--bg2);border-radius:11px;overflow:hidden;border:1px solid var(--border);}
+.svc-table thead tr{background:var(--bg3);}
+.svc-table th{padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);font-weight:500;text-align:left;border-bottom:1px solid var(--border);}
+.svc-table td{padding:10px 14px;border-bottom:1px solid var(--bg3);color:var(--text2);vertical-align:top;}
+.svc-table td:first-child{color:var(--text);font-weight:600;}
+.svc-table tr:last-child td{border-bottom:none;}
+.svc-table tr:hover td{background:var(--bg3);}
+.svc-head{display:flex;align-items:center;gap:10px;margin:28px 0 11px;}
+.svc-head-title{font-family:'Bebas Neue',sans-serif;font-size:19px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--text3);border-bottom:1px solid var(--border);}
+td{padding:10px 14px;border-bottom:1px solid var(--bg3);color:var(--text2);vertical-align:top;}
+td:first-child{color:var(--text);font-weight:600;}
+tr:hover td{background:var(--bg3);}
+.journey{display:flex;gap:0;overflow-x:auto;padding-bottom:8px;}
+.j-step{flex:1;min-width:128px;position:relative;}
+.j-step:not(:last-child)::after{content:'→';position:absolute;right:-12px;top:26px;color:var(--text3);font-size:17px;z-index:2;}
+.j-box{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:16px 12px;margin:0 5px;text-align:center;transition:all .2s;}
+.j-box:hover{box-shadow:0 3px 12px rgba(0,0,0,0.09);}
+.j-num{font-family:'Bebas Neue',sans-serif;font-size:30px;line-height:1;margin-bottom:3px;}
+.j-title{font-weight:700;font-size:13px;margin-bottom:4px;}
+.j-desc{font-size:11px;color:var(--text3);line-height:1.5;}
+.j-svcs{margin-top:7px;display:flex;flex-direction:column;gap:2px;}
+.j-svc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);}
+.qa-item{border:1px solid var(--border);border-radius:11px;margin-bottom:10px;overflow:hidden;}
+.qa-q{padding:16px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:10px;background:var(--bg2);transition:background .2s;user-select:none;}
+.qa-q:hover{background:var(--bg3);}
+.qa-num{font-family:'Bebas Neue',sans-serif;font-size:24px;line-height:1;color:var(--blue);min-width:26px;}
+.qa-text{font-weight:600;font-size:14px;flex:1;color:var(--text);}
+.qa-arr{color:var(--text3);transition:transform .3s;margin-left:auto;}
+.qa-a{display:none;padding:16px 20px 20px 56px;font-size:13px;color:var(--text2);line-height:1.8;border-top:1px solid var(--border);background:var(--bg3);}
+.qa-item.open .qa-a{display:block;}
+.qa-item.open .qa-arr{transform:rotate(180deg);}
+.ax-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;}
+.ax-box{border-radius:11px;padding:24px;border:1px solid var(--border);background:var(--bg2);}
+.ax-box h3{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;margin-bottom:12px;}
+.ax-list{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.ax-list li{font-size:13px;color:var(--text2);padding-left:13px;position:relative;}
+.ax-list li::before{content:'·';position:absolute;left:0;color:var(--text3);}
+.ax-mid{text-align:center;font-size:26px;color:var(--text3);}
+.ax-mid span{font-size:10px;display:block;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:3px;}
+.rr{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--bg3);}
+.rr:last-child{border-bottom:none;}
+.rr-icon{font-size:17px;min-width:26px;}
+.rr-title{font-weight:600;font-size:13px;margin-bottom:2px;color:var(--text);}
+.rr-desc{font-size:12px;color:var(--text2);}
+.warn{background:var(--amber-bg);border:1px solid #e8c040;border-radius:7px;padding:10px 14px;font-size:12px;color:var(--amber);margin-top:10px;font-family:'JetBrains Mono',monospace;}
+.warn::before{content:'⚠  ';}
+.info-box{background:var(--blue-bg);border:1px solid #a0c0f0;border-radius:7px;padding:10px 14px;font-size:13px;color:var(--blue);margin-top:14px;}
+.bar-chart{display:flex;flex-direction:column;gap:9px;}
+.bar-row{display:flex;align-items:center;gap:10px;}
+.bar-lbl{font-size:12px;color:var(--text2);min-width:84px;text-align:right;}
+.bar-track{flex:1;height:7px;background:var(--bg3);border-radius:4px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.16,1,.3,1);}
+.partner-sec{margin-bottom:22px;}
+.partner-sec h3{font-size:13px;color:var(--text2);margin-bottom:9px;font-family:'JetBrains Mono',monospace;letter-spacing:.7px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{padding:4px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);background:var(--bg2);transition:all .15s;cursor:default;}
+.chip:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg);}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+footer{padding:28px 60px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;background:var(--bg2);}
+@media(max-width:768px){header,section,nav{padding-left:18px;padding-right:18px;}.ax-grid{grid-template-columns:1fr;}.ax-mid{display:none;}.journey{flex-direction:column;}.j-step::after{display:none;}footer{flex-direction:column;gap:5px;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">IB Junior Research · IPO Analysis Report</div>
+  <h1>MEGAZONE<span>CLOUD</span></h1>
+  <div class="header-sub">아시아 최대 AWS Premier 파트너 · 클라우드 MSP → AX 전환 기업 분석 보고서</div>
+  <div class="header-meta">
+    <div class="meta-item"><span class="meta-label">연매출 (2022)</span><span class="meta-value acc">1.4조원</span></div>
+    <div class="meta-item"><span class="meta-label">고객사</span><span class="meta-value">5,000+</span></div>
+    <div class="meta-item"><span class="meta-label">임직원</span><span class="meta-value">2,500+</span></div>
+    <div class="meta-item"><span class="meta-label">매출성장률</span><span class="meta-value acc">55%</span></div>
+    <div class="meta-item"><span class="meta-label">시리즈C 투자</span><span class="meta-value">4,500억</span></div>
+    <div class="meta-item"><span class="meta-label">글로벌 거점</span><span class="meta-value">10+</span></div>
+  </div>
+</header>
+
+<nav>
+  <a href="#overview">회사 개요</a>
+  <a href="#services">서비스 전체</a>
+  <a href="#journey">고객 여정</a>
+  <a href="#glossary">용어 사전</a>
+  <a href="#ipo-qa">IPO Q&A</a>
+  <a href="#ax">AX 분석</a>
+  <a href="#partners">파트너 생태계</a>
+</nav>
+
+<main>
+
+<!-- ① OVERVIEW -->
+<section id="overview" class="reveal">
+  <div class="sec-lbl">Section 01</div>
+  <h2>회사 개요</h2>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-val" style="color:var(--blue)">1998</div><div class="kpi-lbl">설립연도</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--teal)">5,000+</div><div class="kpi-lbl">고객사 (2022)</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--amber)">2,500+</div><div class="kpi-lbl">임직원 (2022)</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--green)">55%</div><div class="kpi-lbl">고객 성장률</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:var(--purple)">10+</div><div class="kpi-lbl">글로벌 거점</div></div>
+  </div>
+  <div class="card-grid">
+    <div class="card" style="--ca:var(--blue)"><div class="card-icon">🌏</div><h3>글로벌 거점</h3><p>서울(HQ)·도쿄·싱가포르·홍콩·시드니·베이징·상하이·하노이/HCMC·팔로알토·토론토</p></div>
+    <div class="card" style="--ca:var(--teal)"><div class="card-icon">🏆</div><h3>AWS 파트너십</h3><p>아시아 최고 등급 AWS Premier Tier Services Partner. 국내 최초 다수 AWS 인증 보유. 10여 년 검증.</p></div>
+    <div class="card" style="--ca:var(--amber)"><div class="card-icon">🦄</div><h3>유니콘 기업</h3><p>2022년 국내 클라우드 업계 최초 유니콘 선정 (중소기업벤처부). 시리즈C 4,500억원 투자 유치.</p></div>
+    <div class="card" style="--ca:var(--green)"><div class="card-icon">📈</div><h3>성장성</h3><p>매출 55% YoY 성장. SW 5천억 클럽 진입. 고용노동부 "일자리 으뜸기업" 2년 연속 선정.</p></div>
+  </div>
+  <div style="margin-top:32px;">
+    <h3 style="margin-bottom:14px;">주요 성과 타임라인</h3>
+    <div class="bar-chart">
+      <div class="bar-row"><div class="bar-lbl">2012~2013</div><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--blue)"></div></div><span style="font-size:12px;color:var(--text2);margin-left:8px">국내 최초 AWS Standard/Registered Partner 선정</span></div>
+      <div class="bar-row"><div class="bar-lbl">2014~2015</div><div class="bar-track"><div class="bar-fill" style="width:28%;background:var(--blue)"></div></div><span style="font-size:12px;color:var(--text2);margin-left:8px">국내 최초 AWS Premier Consulting Partner, Hyper Billing 릴리스</span></div>
+      <div class="bar-row"><div class="bar-lbl">2016~2017</div><div class="bar-track"><div class="bar-fill" style="width:48%;background:var(--teal)"></div></div><span style="font-size:12px;color:var(--text2);margin-left:8px">AWS 올해의 컨설팅 파트너상 2관왕, SAP/Elastic 파트너십</span></div>
+      <div class="bar-row"><div class="bar-lbl">2018~2020</div><div class="bar-track"><div class="bar-fill" style="width:66%;background:var(--amber)"></div></div><span style="font-size:12px;color:var(--text2);margin-left:8px">금융 Competency 최초 선정, 벤처천억기업, ISMS 인증</span></div>
+      <div class="bar-row"><div class="bar-lbl">2021~2022</div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--green)"></div></div><span style="font-size:12px;color:var(--text2);margin-left:8px">국내 최초 클라우드 유니콘, 시리즈C 4,500억, SW 5천억 클럽</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ② SERVICES -->
+<section id="services" class="reveal">
+  <div class="sec-lbl">Section 02</div>
+  <h2>서비스 전체 목록 — 2. MegazoneCloud Offers</h2>
+  <p style="margin-bottom:24px;font-size:14px;">장표 [2. MegazoneCloud Offers]에 등장하는 <strong>모든 서비스</strong>를 하나도 빠짐없이 레이어 구조와 상세 테이블로 정리했습니다.</p>
+
+  <!-- Layer diagram -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:24px;margin-bottom:32px;">
+    <div class="layer" style="background:var(--amber-bg);border-color:#e8c040;">
+      <div class="layer-name" style="color:var(--amber)">🚀 AI &amp; 혁신</div>
+      <div class="layer-items"><span class="badge ba">Matilda AI Platform</span><span class="badge ba">Graphcore IPU</span><span class="badge ba">SQream</span><span class="badge ba">Digital Studio</span><span class="badge ba">AWS Training Center</span><span class="badge ba">Matilda Lab</span></div>
+      <div class="layer-tier">고부가가치</div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:5px;">
+      <div class="layer" style="background:var(--teal-bg);border-color:#70d0c0;flex-direction:column;align-items:flex-start;margin-bottom:0;">
+        <div class="layer-name" style="color:var(--teal);margin-bottom:7px;">🛒 Application</div>
+        <div class="layer-items"><span class="badge bt">SAP on Cloud</span><span class="badge bt">Salesforce</span><span class="badge bt">Zendesk/Mega CX</span></div>
+      </div>
+      <div class="layer" style="background:var(--purple-bg);border-color:#b090e8;flex-direction:column;align-items:flex-start;margin-bottom:0;">
+        <div class="layer-name" style="color:var(--purple);margin-bottom:7px;">🔬 Data</div>
+        <div class="layer-items"><span class="badge bp">Data Business Service</span><span class="badge bp">Snowflake</span><span class="badge bp">Databricks</span></div>
+      </div>
+      <div class="layer" style="background:var(--coral-bg);border-color:#e09090;flex-direction:column;align-items:flex-start;margin-bottom:0;">
+        <div class="layer-name" style="color:var(--coral);margin-bottom:7px;">🏰 Security</div>
+        <div class="layer-items"><span class="badge bc">Cloud Security</span><span class="badge bc">Strategic Transform.</span><span class="badge bc">Hybrix</span></div>
+      </div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="layer" style="background:var(--blue-bg);border-color:#90b8f8;">
+      <div class="layer-name" style="color:var(--blue)">🚌 Platform</div>
+      <div class="layer-items"><span class="badge bl">SpaceONE</span><span class="badge bl">Megazone PoPs</span><span class="badge bl">CloudPlex Media</span><span class="badge bl">CloudPlex Media Service</span><span class="badge bl">CloudPlex Delivery</span><span class="badge bl">CloudPlex Delivery Service</span><span class="badge bl">Cloud Contact Center</span><span class="badge bl">Elastic</span><span class="badge bl">Rescale</span></div>
+      <div class="layer-tier">연결 레이어</div>
+    </div>
+    <div class="layer-arrow">↓</div>
+    <div class="layer" style="background:var(--gray-bg);border-color:var(--border2);">
+      <div class="layer-name" style="color:var(--text2)">🏗️ Infrastructure</div>
+      <div class="layer-items"><span class="badge bgr">Managed Service</span><span class="badge bgr">Mass Migration Service</span><span class="badge bgr">Cloud Security Solutions</span><span class="badge bgr">Strategic Cloud Security Transformation</span><span class="badge bgr">Hybrix</span><span class="badge bgr">Hyper Billing</span><span class="badge bgr">Hyper Checker</span><span class="badge bgr">Hyper Ops</span><span class="badge bgr">Hyper Control</span><span class="badge bgr">DMZ Cloud Stack</span><span class="badge bgr">VMware Cloud on AWS</span><span class="badge bgr">Cisco Meraki</span><span class="badge bgr">Graphcore</span><span class="badge bgr">SQream</span></div>
+      <div class="layer-tier">기반 레이어</div>
+    </div>
+    <div class="layer-arrow" style="margin-top:5px;">↓</div>
+    <div class="layer" style="background:var(--green-bg);border-color:#80c8a0;margin-top:0;">
+      <div class="layer-name" style="color:var(--green)">🤝 Partner Offering</div>
+      <div class="layer-items"><span class="badge bg2">Snowflake</span><span class="badge bg2">Databricks</span><span class="badge bg2">DMZ Cloud Stack</span><span class="badge bg2">VMware on AWS</span><span class="badge bg2">Salesforce</span><span class="badge bg2">Zendesk:Mega CX</span><span class="badge bg2">Cisco Meraki</span><span class="badge bg2">Graphcore</span><span class="badge bg2">Elastic</span><span class="badge bg2">SQream</span><span class="badge bg2">Rescale</span></div>
+      <div class="layer-tier">파트너 솔루션</div>
+    </div>
+  </div>
+
+  <!-- ─── Infrastructure ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--text2)">INFRASTRUCTURE</span><span class="badge bgr">디지털 혁신을 위한 최적화된 인프라</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:175px">서비스명</th><th style="width:125px">핵심 기능</th><th>비유 설명 &amp; 상세</th><th style="width:145px">주요 특징</th></tr></thead>
+    <tbody>
+      <tr><td>Managed Service</td><td><span class="badge bgr">24/7 운영 대행</span></td><td>🏠 <strong>건물 시설 관리 업체</strong> — 고객 클라우드를 대신 운영·유지보수. Cloud Operation Center + Managed Cloud Security Operation Center 운영. Support Portal 기반 한국어 기술 지원</td><td>24/7/365, MSP 5.0 인증, AWS 검증</td></tr>
+      <tr><td>Mass Migration Service</td><td><span class="badge bgr">클라우드 이전</span></td><td>🚚 <strong>이사 전문 업체</strong> — 온프레미스·하이브리드·멀티클라우드에서 AWS로 전환. Discovery → Assessment/Consulting → Migration → Operation 4단계 End-to-End</td><td>Cloud Roadmap, 자동화 Tool 기반</td></tr>
+      <tr><td>Hyper Billing</td><td><span class="badge bgr">비용 관리</span></td><td>💳 <strong>클라우드 가계부</strong> — 원화 세금계산서 발행, 다차원 분석 테이블, 태그 지원 상세 비용 관리. 언블렌디드 가격 정책 반영</td><td>다양한 대시보드, 필터링, 청구 대행</td></tr>
+      <tr><td>Hyper Checker</td><td><span class="badge bgr">네트워크 진단</span></td><td>📡 <strong>클라우드 속도계</strong> — 국가·리전간 네트워크 레이턴시를 원클릭으로 측정. AWS 각 리전 실시간 핑 테스트, 직관적 지도 시각화</td><td>국가별·시간별 현황 제공</td></tr>
+      <tr><td>Hyper Ops</td><td><span class="badge bgr">비용 모니터링</span></td><td>📊 <strong>클라우드 계기판</strong> — 계정별·인스턴스 유형별 비용 현황 파악. 예약 인스턴스 및 Savings Plans 사용률 관리</td><td>다양한 필터링, 비용 이상 탐지</td></tr>
+      <tr><td>Hyper Control</td><td><span class="badge bgr">인프라 제어</span></td><td>🕹️ <strong>원격 제어 패널</strong> — EC2·RDS 시작·중지·백업 관리를 클라우드 콘솔 접속 없이 중앙에서 제어. EBS Volumes 포함, 다중 스케줄링 지원</td><td>정책 설정, 로그 확인, 자동화</td></tr>
+      <tr><td>DMZ Cloud Stack</td><td><span class="badge bgr">올인원 플랫폼</span></td><td>🏢 <strong>올인원 클라우드 빌딩</strong> — 하드웨어와 클라우드 운영 소프트웨어를 모두 포함. VM부터 컨테이너까지 지원. 하이브리드·멀티클라우드 즉각 확장 가능</td><td>Dell Apex + VMware 기반, Scale-Out</td></tr>
+      <tr><td>VMware Cloud on AWS</td><td><span class="badge bgr">하이브리드 클라우드</span></td><td>🔗 <strong>기존 서버실과 AWS를 연결하는 다리</strong> — 온프레미스 VMware vSphere 환경을 AWS EC2 Bare-metal로 안전하게 확장. 동일 운영환경에서 온프레미스+클라우드 동시 관리</td><td>HCX 기반, 무중단 마이그레이션</td></tr>
+      <tr><td>Cisco Meraki</td><td><span class="badge bgr">클라우드 네트워크</span></td><td>📶 <strong>클라우드 관리형 네트워크 풀스택</strong> — 단일 대시보드로 수만 개 지점 관리. MX(보안·SD-WAN)·MS(스위치)·MR(무선랜)·SM(MDM)·MT(IoT센서)·MV(스마트카메라)·MG(셀룰러)·MI(앱인사이트)</td><td>직관적 대시보드, 무제한 확장</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Platform ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--blue)">PLATFORM</span><span class="badge bl">디지털 혁신 가속화를 위한 모던 애플리케이션 개발·운영·관리 플랫폼</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:195px">서비스명</th><th style="width:125px">핵심 기능</th><th>비유 설명 &amp; 상세</th><th style="width:155px">주요 특징</th></tr></thead>
+    <tbody>
+      <tr><td>SpaceONE</td><td><span class="badge bl">멀티클라우드 관리</span></td><td>🏙️ <strong>여러 클라우드를 하나의 지도에서 보는 통합 관제 센터</strong> — 다수 AWS·Azure·GCP 계정을 단일 화면에서 통합 관리. 멀티클라우드 자원 자동 수집, 비용 분석, 알림 통합</td><td>Asset Inventory / Cost Analysis / Alert Manager / 접근 권한 관리</td></tr>
+      <tr><td>Megazone PoPs</td><td><span class="badge bl">SaaS 통합 관리</span></td><td>🗂️ <strong>회사 앱 통합 리모컨</strong> — 직원이 쓰는 모든 SaaS를 하나의 계정·대시보드로 통합 관리. SSO로 한 번에 로그인, 계정 자동 생성·회수, 비용 최적화</td><td>Single Sign On / User Provisioning / SaaS 비용 절감</td></tr>
+      <tr><td>CloudPlex Media</td><td><span class="badge bl">비디오 플랫폼</span></td><td>📺 <strong>All-in-One 온라인 방송국 솔루션</strong> — VOD·Live·Interactive Live·AI Based CMS·Audience Measurement를 클라우드 서버리스로 제공. 시장 트렌드에 맞는 미디어 서비스 지속 추가·업그레이드</td><td>Fully Managed·Serverless on AWS</td></tr>
+      <tr><td>CloudPlex Media Service</td><td><span class="badge bl">미디어 구축 서비스</span></td><td>🎬 <strong>방송국 설계·시공 전문 업체</strong> — 생방송 스트리밍·VOD FileLive·4K~8K UHD 고해상도 구성. AWS 미디어서비스 기반 아키텍처 설계·구축·교육 제공</td><td>One-time Provisioning / Serverless Pipeline</td></tr>
+      <tr><td>CloudPlex Delivery</td><td><span class="badge bl">멀티CDN 플랫폼</span></td><td>🚀 <strong>콘텐츠 배달 다중 루트 관리 시스템</strong> — AWS·Google·Azure·Tencent·Alibaba·Akamai·Cloudflare 및 SKT·KT·LGU+ 등 통신사 CDN을 단일 콘솔에서 관리</td><td>Advanced Routing Policy / 실시간 지표 / 로컬 CDN 지원</td></tr>
+      <tr><td>CloudPlex Delivery Service</td><td><span class="badge bl">멀티CDN 컨설팅</span></td><td>🗺️ <strong>CDN 최적화 설계 전문 컨설턴트</strong> — 멀티CDN 도입 전략 수립, 아키텍처 최적 설계, 구성 대행. 안정적 전송·글로벌 커버리지·비용 효율화</td><td>Specialist of CDN / Fast Implementation / Education</td></tr>
+      <tr><td>Cloud Contact Center</td><td><span class="badge bl">옴니채널 컨택센터</span></td><td>☎️ <strong>100% 클라우드 고객센터</strong> — Amazon Connect 기반. IVR·챗봇·AI 상담(Amazon Lex)·Contact Lens 분석·CRM(Salesforce·Zendesk) 연동. CX Consulting → CCaaS → Managed Service 3단계</td><td>100% 클라우드, 옴니채널 고객경험</td></tr>
+      <tr><td>Elastic</td><td><span class="badge bl">검색·보안·모니터링</span></td><td>🔍 <strong>회사 내부 구글+모니터링+보안 통합 플랫폼</strong> — 데이터 검색·분석·인프라 모니터링·보안을 단일 플랫폼으로 구현. Kibana Dashboard 제공</td><td>구축형 또는 SaaS형 선택 가능</td></tr>
+      <tr><td>Rescale</td><td><span class="badge bl">클라우드 HPC</span></td><td>💻 <strong>슈퍼컴퓨터 대여 서비스</strong> — HPC 인프라 없이 디지털 R&amp;D·시뮬레이션·CAE 즉시 이용. 사용한 만큼 지불(On-demand), BYOL 가능. 680+ CAE 소프트웨어 지원</td><td>Rescale ScaleX Platform, 대기시간 해소</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Application ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--teal)">APPLICATION</span><span class="badge bt">신속한 디지털 비즈니스 의사결정 및 관리를 위한 비즈니스 애플리케이션</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:195px">서비스명</th><th style="width:125px">핵심 기능</th><th>비유 설명 &amp; 상세</th><th style="width:155px">주요 특징</th></tr></thead>
+    <tbody>
+      <tr><td>SAP on Cloud</td><td><span class="badge bt">클라우드 ERP</span></td><td>🏭 <strong>회사 살림살이 관리 시스템을 클라우드로 이전</strong> — SAP S/4HANA를 AWS에 올려 비즈니스 전환. Cloud Consulting → Implementation/Migration → Application &amp; Managed Service 전 단계 Total-Service. SAP LoB Solutions(BTP·SAC·Concur·Ariba 등) 지원</td><td>SAP PCE Cloud / HA/DR 구축 / SAP 공인 인력</td></tr>
+      <tr><td>Salesforce</td><td><span class="badge bt">CRM 플랫폼</span></td><td>📞 <strong>영업·마케팅·고객서비스 올인원 CRM</strong> — Sales Cloud(잠재고객 발굴)·Marketing Cloud(개인화 마케팅)·Service Cloud(고객관계 강화) 구축·리셀링·운영. 다양한 구축·유지보수 경험 기반 멀티클라우드 컨설팅</td><td>Professional Service / Managed Service 조직</td></tr>
+      <tr><td>Zendesk : Mega CX</td><td><span class="badge bt">고객서비스 솔루션</span></td><td>💬 <strong>고객 문의를 티켓으로 관리하는 스마트 고객센터</strong> — 50여개 브랜드 구축 경험. 쉽고 빠른 온보딩, 고객경험 커스터마이징, 프로페셔널 운영팀 지원. 모든 문의 티켓 관리·분석·보고서 제공</td><td>50+ 브랜드 경험, 채널별 고객경험 설계</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Data ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--purple)">DATA</span><span class="badge bp">데이터 가치 실현을 위한 데이터 플랫폼 구축</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:195px">서비스명</th><th style="width:125px">핵심 기능</th><th>비유 설명 &amp; 상세</th><th style="width:155px">주요 특징</th></tr></thead>
+    <tbody>
+      <tr><td>Data Business Service</td><td><span class="badge bp">데이터 풀스택</span></td><td>🛢️ <strong>데이터 정유 공장</strong> — 데이터 전략 수립→빅데이터 플랫폼 구축→데이터 분석 서비스→AI/ML 분석→운영·교육까지 전 단계 제공. 3ARC·DataLake123·Any2R·CubeAI·Lakehouse·Any2Snow·CubeAI on Databricks/Dataiku/TigerGraph 방법론 보유. Data Science Academy 운영</td><td>On-Premise→클라우드 빅데이터 플랫폼 전환</td></tr>
+      <tr><td>Snowflake</td><td><span class="badge bp">데이터 클라우드</span></td><td>❄️ <strong>모든 데이터 형태를 담는 만능 데이터 창고</strong> — 정형·반정형·비정형·스트리밍 데이터를 단일 플랫폼에서 수집·저장·처리·실시간 공유. Any2Snow: 기존 DW(Teradata·Oracle Exadata·Netezza 등)를 Snowflake로 신속 이관</td><td>글로벌 No.1 파트너 / 유지보수 최소화</td></tr>
+      <tr><td>Databricks</td><td><span class="badge bp">레이크하우스</span></td><td>🔬 <strong>데이터 웨어하우스 + 데이터 레이크의 합체</strong> — 분석·BI·ML 사일로 제거, DW의 안정성과 데이터 레이크의 유연성 결합. CubeAI on Databricks로 Advanced Analytics 서비스. Lakehouse: Delta Lake 및 DW 구축, Data Sharing 환경 구축</td><td>Simple / Open / Multi Cloud 3가지 강점</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Security ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--coral)">SECURITY</span><span class="badge bc">멀티클라우드 환경 최적화 보안 솔루션 및 서비스</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:220px">서비스명</th><th style="width:125px">핵심 기능</th><th>비유 설명 &amp; 상세</th><th style="width:155px">주요 특징</th></tr></thead>
+    <tbody>
+      <tr><td>Cloud Security Solutions &amp; Services</td><td><span class="badge bc">통합 보안</span></td><td>🏰 <strong>클라우드 성 전체를 지키는 통합 경비 시스템</strong> — 멀티클라우드+SECaaS 전략 기반 고객 맞춤형 보안 제공. Cyber Kill Chain · MITRE ATT&amp;CK · Shift Left · Shared Responsibility 기반</td><td>Full Stack MSP, 국내 클라우드 MSP 1위</td></tr>
+      <tr><td>Strategic Cloud Security Transformation (3단계)</td><td><span class="badge bc">보안 전략 전환</span></td><td>🗺️ <strong>보안 컨설턴트가 설계한 3단계 보안 로드맵</strong> — ①보안 거버넌스 컨설팅&amp;취약점 진단(ISMS·ISO27001·ITGC·웹·모바일·이메일·클라우드 취약점) ②SECaaS 온보딩(CNAPP·CSPM·CWPP·CIEM·IAM·PAM·IdP·SSE·ZTNA·WAAP 등 Core+Enhanced) ③365×24×7 Managed Cloud Security Operation Center(CERT·보안관제·보고서)</td><td>MSSP-as-a-MSP, 2 weeks assessment</td></tr>
+      <tr><td>Hybrix</td><td><span class="badge bc">하이브리드 Zero Trust 보안</span></td><td>🔐 <strong>글로벌 최초 Zero Trust 하이브리드 클라우드 보안 솔루션</strong> — Frontend·Backend 통합 아키텍처. 서버·DB·네트워크·애플리케이션 통합 보안. 단계별 핵심 보안 기술 적용, 단계별 침해 차단. Multi Tenancy 보안 Bastion 제공</td><td>통합 계정·인증·알람·접근검사·Topology 서비스</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Education ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--green)">EDUCATION</span><span class="badge bg2">AWS 공식 교육 파트너 (Authorized Training Partner)</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:220px">서비스명</th><th style="width:125px">핵심 기능</th><th>상세 내용</th></tr></thead>
+    <tbody>
+      <tr><td>AWS Training Center</td><td><span class="badge bg2">클라우드 교육</span></td><td>AWS 공인 강사·AWS 공인 자격증·Hands-on 실습 Lab 3종 제공. 커리큘럼 — Foundational(AWS Cloud Practitioner Essentials·Technical Essentials) / Associate(Architecting·Developing·Cloud Operations on AWS) / Professional(Advanced Architecting·DevOps Engineering) / Specialty(Security Engineering·Containers on EKS·Data Warehousing·Building Data Lakes·Batch Data Analytics·Serverless Solutions·Databases·Data Analytics with Redshift). 체계적 Learning Path Guide, 클라우드 내재화 Build up Program, Deep dive Hands-on 운영</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Hyper Solution ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--text2)">HYPER SOLUTION</span><span class="badge bgr">메가존 자체 개발 클라우드 운영 솔루션 4종</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:160px">솔루션명</th><th>기능 요약</th></tr></thead>
+    <tbody>
+      <tr><td>Hyper Billing</td><td>언블렌디드 가격 정책 반영 원화 세금계산서 발행 / 다차원 분석 테이블 및 태그 지원 상세 비용 관리 / 다양한 대시보드 및 메뉴를 통한 비용 관리 지원 / 다차원적인 비용 분석 및 필터링 지원</td></tr>
+      <tr><td>Hyper Checker</td><td>국가와 리전간 네트워크 레이턴시 원클릭 측정 / 네트워크 레이턴시 데이터 활용 직관적 정보 파악 / AWS 각 리전별 핑 테스트를 통해 실시간 레이턴시 체크 / 국가별·시간별 네트워크 응답 속도 현황 지원</td></tr>
+      <tr><td>Hyper Ops</td><td>계정별·인스턴스 유형별 등 다양한 기준으로 비용 현황 파악 / 예약 인스턴스 및 Savings Plans 사용 현황 파악 / 다양한 필터링 제공</td></tr>
+      <tr><td>Hyper Control</td><td>EC2 &amp; RDS 시작·중지·백업 관리 기능 제공 (EBS Volumes 포함) / 중앙 집중형 기능 관리로 클라우드 관리 콘솔 접속 없이 EC2 인스턴스 제어 / EC2 다중 정책 설정 및 로그 확인 기능 지원 / 다중 스케줄링 기능 지원</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Matilda AI Platform ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--amber)">MATILDA AI PLATFORM</span><span class="badge ba">MLOps 통합 플랫폼 — 자체 개발 AI 서비스</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:230px">구성 요소</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>AI 통합 개발환경 (IDE)</td><td>개발 편의 도구 및 표준 환경 제공 / UX·UI 기반 통합 플랫폼 / 다양한 AI 엔진 제공</td></tr>
+      <tr><td>AI 인프라 통합 운영관리</td><td>단일 플랫폼 기반 자원 통합 / On-Demand 요구 자원 즉시 제공 / 인프라 사용 현황 및 장애 알림</td></tr>
+      <tr><td>최적화된 자원 활용</td><td>컨테이너 기반 유연한 자원 활용 / 사용자·그룹 자원 할당 정책 / 복잡성 줄이고 비용 최적화</td></tr>
+      <tr><td>노트북 중심 기능연결 및 자원 스케줄</td><td>데이터 접근·기능 찾기 어려움 해소 / 자원 효율화로 동시 사용자 수 극대화</td></tr>
+      <tr><td>카드형 UI를 통한 실행 환경 설정</td><td>복잡한 설정과 코드 작업 최소화 / 카드형 인터페이스로 쉬운 사용 가능</td></tr>
+      <tr><td>하이브리드 학습 체계</td><td>온프레미스 자원 한계 극복 &amp; 비용 절감 / GPU·IPU 포함 AI전용 프로세서 개발환경 즉시 제공</td></tr>
+      <tr><td>템플릿 기반 파이프라인 개발 체계</td><td>실제 현장에서 사용 가능한 템플릿 제공 / AI엔지니어에게 익숙하지 않은 파이프라인 코드 작업 최소화</td></tr>
+      <tr><td>자동 앱 배포 체계</td><td>단절된 네트워크·보안 이슈로 인한 클러스터 내부 앱 배포 어려움 해소</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Digital Studio ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--amber)">DIGITAL STUDIO</span><span class="badge ba">Innovative Customer Engagement Framework</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:230px">구성 요소</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>급진적 협업 워크샵</td><td>급진적 협업과 워크샵 수행을 통해 모던 컨설팅 프랙티스를 제공하는 새로운 접근방식. "어디부터 출발해야 하는가 → 어떻게 비즈니스 사례를 검증할 수 있는가" 해결</td></tr>
+      <tr><td>Modern Consulting Practice</td><td>비즈니스와 사용자 경험 기반의 빠르고 실용적인 고객 서비스 기획 및 혁신. 사용자 needs부터 디지털 기술 적용까지 연결. Proactive · Co-creative · Accelerative · Value Co-creation</td></tr>
+      <tr><td>Approach (4단계)</td><td>①발견(공감·창의) → ②탐험(아이디어·우선순위) → ③프로토타입(상세화·정형화) → ④평가(솔루션 검증·담금). 기업(비즈니스)과 사용자 경험을 동시에 만족시키는 고객 오퍼링 도출</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ─── Partner Offering ─── -->
+  <div class="svc-head"><span class="svc-head-title" style="color:var(--green)">PARTNER OFFERING</span><span class="badge bg2">Global No.1 파트너사 솔루션 — 메가존이 컨설팅·운영 대행</span></div>
+  <table class="svc-table">
+    <thead><tr><th style="width:200px">파트너 솔루션</th><th style="width:115px">카테고리</th><th>메가존의 역할 및 제공 내용</th></tr></thead>
+    <tbody>
+      <tr><td>Snowflake</td><td><span class="badge bg2">Data Cloud</span></td><td>Any2Snow 방법론으로 기존 On-Premise DW(Teradata·Oracle Exadata·Netezza 등)를 Snowflake로 신속 이관. 컨설팅·구현·운영 일괄 제공</td></tr>
+      <tr><td>Databricks</td><td><span class="badge bg2">Lakehouse</span></td><td>Lakehouse(Delta Lake+DW) 구축, Databricks Data Sharing 환경 구축. CubeAI on Databricks(SPARK 기반 Advanced Analytics) 서비스 제공</td></tr>
+      <tr><td>DMZ Cloud Stack</td><td><span class="badge bg2">All-in-One 클라우드</span></td><td>분석·설계·마이그레이션·운영까지 전문가 지원. IT 운영 비용(OPEX)으로 재무 위험 감소. VM~컨테이너까지 통합 플랫폼. VMware Cloud on AWS 호환</td></tr>
+      <tr><td>VMware Cloud on AWS</td><td><span class="badge bg2">하이브리드 클라우드</span></td><td>현상 유지 분석→아키텍처 컨설팅→이행. 글로벌 팀의 연중무휴 모니터링·운영. 분석·보고·이슈조사·기술지원·인프라/애플리케이션 보안·비용 최적화 포함</td></tr>
+      <tr><td>Salesforce</td><td><span class="badge bg2">CRM</span></td><td>Sales Cloud·Marketing Cloud·Service Cloud 멀티클라우드 컨설팅 및 리셀러·운영관리. 다양한 구축·유지보수 경험 보유</td></tr>
+      <tr><td>Zendesk : Mega CX</td><td><span class="badge bg2">고객서비스</span></td><td>50여개 브랜드 구축 경험 기반. 쉽고 빠른 온보딩, 고객경험 커스터마이징, 프로페셔널 운영팀 지원. 티켓·분석·보고서 구축·운영 일괄</td></tr>
+      <tr><td>Cisco Meraki</td><td><span class="badge bg2">네트워크</span></td><td>MX(보안·SD-WAN)·MS(스위치)·MR(무선랜)·SM(MDM)·MT(IoT센서)·MV(스마트카메라)·MG(셀룰러)·MI(앱인사이트) 풀스택. 단일 대시보드로 전국/글로벌 지점 관리</td></tr>
+      <tr><td>Graphcore</td><td><span class="badge bg2">AI 하드웨어</span></td><td>IPU 기반 AI 컴퓨팅. Matilda Lab에서 IPU 최적화 지원·컨설팅. IPU Software Stack 개발(그래프코어 공동). AI Cloud 플랫폼 개발·서비스. Trained Model 활용 Inferencing 전용 머신 개발(ECO Partner 공동)</td></tr>
+      <tr><td>Elastic</td><td><span class="badge bg2">Search·Security</span></td><td>데이터 검색·분석·인프라 모니터링·보안 단일 플랫폼. 메가존 기술지원·컨설팅. 구축형/SaaS형 선택. 실시간 비즈니스 최적화. Kibana Dashboard 제공</td></tr>
+      <tr><td>SQream (지능형 빅데이터 분석)</td><td><span class="badge bg2">GPU 기반 DB</span></td><td>GPGPU 기반 DB 엔진. 데이터 분석 범위 20배 확장, 100배 빠른 처리속도, 비용 90% 절감 효과. GPU당 3~6TB/hour 로드 속도, Multi-GPU Ingestion 지원, 표준 SQL, 자동 압축</td></tr>
+      <tr><td>Rescale</td><td><span class="badge bg2">클라우드 HPC</span></td><td>디지털 R&amp;D에 최적화된 HPC CLOUD. 680+ CAE 소프트웨어 지원. 대기시간 해소·해석시간 단축·유연한 연구환경·팀 간 협업. On-demand 과금, BYOL 가능. Rescale ScaleX Platform 제공</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">자료 기준 2022년. Graphcore는 2023년 SoftBank에 인수됨 — 현재 파트너십 상태 별도 확인 필요</div>
+</section>
+
+<!-- ③ JOURNEY -->
+<section id="journey" class="reveal">
+  <div class="sec-lbl">Section 03</div>
+  <h2>고객 여정 플로우</h2>
+  <p style="margin-bottom:24px;font-size:14px;">기업 고객이 메가존클라우드와 함께하는 5단계 디지털 전환 여정입니다.</p>
+  <div class="journey">
+    <div class="j-step"><div class="j-box"><div class="j-num" style="color:var(--text3)">01</div><div class="j-title">진단</div><div class="j-desc">현황 파악 &amp; 전략 수립</div><div class="j-svcs"><span class="j-svc">Discovery</span><span class="j-svc">Assessment</span><span class="j-svc">Consulting</span></div></div></div>
+    <div class="j-step"><div class="j-box" style="border-color:#90b8f8;"><div class="j-num" style="color:var(--blue)">02</div><div class="j-title">전환</div><div class="j-desc">클라우드 마이그레이션</div><div class="j-svcs"><span class="j-svc">Mass Migration</span><span class="j-svc">Managed Service</span><span class="j-svc">인프라 구성</span></div></div></div>
+    <div class="j-step"><div class="j-box" style="border-color:#70d0c0;"><div class="j-num" style="color:var(--teal)">03</div><div class="j-title">플랫폼</div><div class="j-desc">서비스 구축 &amp; 최적화</div><div class="j-svcs"><span class="j-svc">SpaceONE</span><span class="j-svc">CloudPlex</span><span class="j-svc">SAP on Cloud</span></div></div></div>
+    <div class="j-step"><div class="j-box" style="border-color:#b090e8;"><div class="j-num" style="color:var(--purple)">04</div><div class="j-title">고도화</div><div class="j-desc">데이터·AI &amp; 보안 강화</div><div class="j-svcs"><span class="j-svc">Data Platform</span><span class="j-svc">AI/ML Analytics</span><span class="j-svc">Security Suite</span></div></div></div>
+    <div class="j-step"><div class="j-box" style="border-color:#e8c040;"><div class="j-num" style="color:var(--amber)">05</div><div class="j-title">혁신</div><div class="j-desc">디지털 비즈니스 전환</div><div class="j-svcs"><span class="j-svc">Matilda AI</span><span class="j-svc">Digital Studio</span><span class="j-svc">DX 완성</span></div></div></div>
+  </div>
+  <div class="info-box">💡 <strong>IPO 포인트</strong> — 5단계 전 과정을 일괄 수행 가능 → 고객 Lock-in 효과 → 높은 유지율 및 Cross-sell 기회 극대화</div>
+</section>
+
+<!-- ④ GLOSSARY -->
+<section id="glossary" class="reveal">
+  <div class="sec-lbl">Section 04</div>
+  <h2>IT 용어 사전</h2>
+  <p style="margin-bottom:18px;font-size:14px;">장표에 등장하는 전문 용어를 비전공자 수준에서 쉽게 풀이했습니다.</p>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:11px;overflow:hidden;">
+    <table>
+      <thead><tr><th style="width:150px">용어</th><th style="width:105px">카테고리</th><th>쉬운 풀이</th></tr></thead>
+      <tbody>
+        <tr><td>MSP</td><td><span class="badge bl">인프라</span></td><td>내 집(IT 인프라)을 대신 관리해주는 전문 업체. 24시간 운영·유지보수 대행. Managed Service Provider</td></tr>
+        <tr><td>DX / 디지털 전환</td><td><span class="badge bt">전략</span></td><td>회사 일하는 방식·제품·고객 경험을 디지털 기술로 근본적으로 바꾸는 것. 단순 IT 도입이 아닌 비즈니스 모델 자체의 변화</td></tr>
+        <tr><td>AX / AI 전환</td><td><span class="badge ba">AI</span></td><td>DX의 진화 버전. AI를 기업의 핵심 의사결정과 비즈니스 모델 자체에 내재화하는 것. 효율화를 넘어 새로운 수익 창출</td></tr>
+        <tr><td>AI / ML</td><td><span class="badge ba">AI</span></td><td>AI = 사람처럼 판단하는 컴퓨터. ML(머신러닝) = 데이터를 반복 학습해 스스로 똑똑해지는 방법론</td></tr>
+        <tr><td>MLOps</td><td><span class="badge ba">AI</span></td><td>ML + Operations. AI 모델을 개발·배포·관리하는 전 과정을 자동화하는 실무 방법론. Matilda AI Platform이 지원</td></tr>
+        <tr><td>DevOps</td><td><span class="badge bg2">개발</span></td><td>개발(Dev)과 운영(Ops) 팀이 협력해 소프트웨어를 빠르고 안정적으로 출시하는 문화·방법론. CI/CD·IaC·자동화 포함</td></tr>
+        <tr><td>Migration</td><td><span class="badge bl">인프라</span></td><td>기존 사내 서버(온프레미스)에서 클라우드로 데이터와 시스템을 이사시키는 작업</td></tr>
+        <tr><td>SaaS</td><td><span class="badge bt">플랫폼</span></td><td>소프트웨어를 구매·설치하지 않고 인터넷으로 구독해 사용. 예: Google Docs, Slack, Zoom</td></tr>
+        <tr><td>Zero Trust</td><td><span class="badge bc">보안</span></td><td>"믿을 수 있는 내부 네트워크는 없다"는 보안 철학. 모든 접근을 항상 의심하고 검증. Hybrix가 이 방식으로 설계됨</td></tr>
+        <tr><td>CDN</td><td><span class="badge bl">인프라</span></td><td>콘텐츠 전송 네트워크. 전 세계 서버에서 가장 가까운 위치로 콘텐츠를 빠르게 제공. CloudPlex Delivery가 멀티CDN 관리</td></tr>
+        <tr><td>온프레미스</td><td><span class="badge bl">인프라</span></td><td>회사 내부에 직접 서버를 설치해 운영하는 방식. 클라우드의 반대 개념</td></tr>
+        <tr><td>SECaaS</td><td><span class="badge bc">보안</span></td><td>Security as a Service. 보안 기능을 구독 서비스로 이용. CNAPP·CSPM·CWPP·IAM·SSE/ZTNA·WAAP 등 포함</td></tr>
+        <tr><td>ERP (SAP)</td><td><span class="badge bt">애플리케이션</span></td><td>회사 전체(생산·인사·재무·물류)를 통합 관리하는 대형 업무 시스템. SAP가 세계 1위 브랜드</td></tr>
+        <tr><td>IPU</td><td><span class="badge ba">AI</span></td><td>Intelligence Processing Unit. AI 연산에 특화된 칩. GPU보다 머신러닝 작업에 효율적. Graphcore 제조</td></tr>
+        <tr><td>HPC</td><td><span class="badge bgr">인프라</span></td><td>High Performance Computing. 슈퍼컴퓨터급 연산이 필요한 시뮬레이션·R&amp;D에 사용. Rescale이 클라우드 HPC 제공</td></tr>
+        <tr><td>AWS Premier Partner</td><td><span class="badge bl">인프라</span></td><td>아마존 클라우드(AWS)가 공식 인정한 최고 등급 파트너. 기술력·매출·고객 만족도 등 엄격한 조건 충족 필요</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ⑤ IPO Q&A -->
+<section id="ipo-qa" class="reveal">
+  <div class="sec-lbl">Section 05</div>
+  <h2>IPO 핵심 Q&amp;A</h2>
+  <p style="margin-bottom:20px;font-size:14px;">IPO 제안서 담당자가 반드시 다뤄야 할 3가지 핵심 질문과 답변입니다. 클릭해서 확인하세요.</p>
+  <div class="qa-item">
+    <div class="qa-q" onclick="tQA(this)"><div class="qa-num">Q1</div><div class="qa-text">매출의 질(Quality of Revenue)은 어떤가? MSP 사업 특성상 AWS 재판매 마진에 지나치게 의존하는 것 아닌가?</div><div class="qa-arr">▼</div></div>
+    <div class="qa-a"><p>메가존의 수익 구조는 크게 3가지로 구성됩니다:</p><br><p>① <strong>AWS 리셀링 마진</strong> — 도매가로 구매해 리테일로 판매하는 전통적 MSP 수익<br>② <strong>Managed Service 구독형 수수료</strong> — 운영 대행의 반복 수익(Recurring Revenue)<br>③ <strong>자체 솔루션 라이선스</strong> — SpaceONE, Hybrix, Hyper Suite(4종), Matilda AI Platform 등 자체 IP</p><br><p>IPO 매력도를 높이려면 자체 IP 기반 수익 비중이 핵심입니다. 2022년 매출 1.4조원 대비 자체 솔루션 ARR 수치 확보가 필수적입니다.</p><div class="warn">2023~2025 감사 재무제표에서 자체 솔루션 매출 비중과 ARR(연간 반복 수익) 데이터 별도 확보 필요</div></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q" onclick="tQA(this)"><div class="qa-num">Q2</div><div class="qa-text">아시아 시장 확장 전략의 실행 가능성은? 글로벌 MSP(Accenture, NTT DATA 등)와의 차별화 포인트는?</div><div class="qa-arr">▼</div></div>
+    <div class="qa-a"><p>메가존의 경쟁 우위는 3가지입니다:</p><br><p>① <strong>AWS 10년+ 최고 등급 파트너십</strong> — 글로벌 MSP 대비 가장 큰 차별점. AWS가 직접 레퍼런스하는 아시아 대표 파트너<br>② <strong>언어·문화 차별화</strong> — 한국어 기반 AWS 지원, 일본·베트남 현지 거점. 글로벌 SI가 제공 못하는 로컬 밀착형 서비스<br>③ <strong>아시아 현지 법인 10개</strong> — 서울·도쿄·싱가포르·하노이·홍콩·시드니 등 실제 영업 거점 보유</p><div class="warn">일본 이토추 테크노솔루션즈(CTC) 파트너십 이후 일본 매출 기여도 데이터가 글로벌 성장 스토리의 핵심 근거 자료가 됩니다</div></div>
+  </div>
+  <div class="qa-item">
+    <div class="qa-q" onclick="tQA(this)"><div class="qa-num">Q3</div><div class="qa-text">AX(AI Transformation) 트렌드 속에서 메가존은 단순 인프라 사업자를 넘어설 수 있는가? 밸류에이션 리레이팅 가능성은?</div><div class="qa-arr">▼</div></div>
+    <div class="qa-a"><p>이것이 현재 IPO 스토리에서 가장 중요한 질문입니다.</p><br><p><strong>강점:</strong> 5,000개 고객사 클라우드 인프라 운영 → AI 업셀링 채널 / Matilda AI Platform → 구독형 SaaS 전환 가능 / Snowflake·Databricks 데이터 파이프라인 역량</p><br><p><strong>리스크:</strong> AWS Bedrock·Azure OpenAI가 MSP 중간자 역할 일부 대체 / ChatGPT 이후 기업 AI 직접 도입 선호 증가</p><div class="warn">IPO 핵심: "인프라 MSP"에서 "AI 솔루션 전문가"로의 포지셔닝 전환 정도가 밸류에이션 멀티플을 결정합니다</div></div>
+  </div>
+</section>
+
+<!-- ⑥ AX -->
+<section id="ax" class="reveal">
+  <div class="sec-lbl">Section 06</div>
+  <h2>AX (AI Transformation) 분석 — 최신 현황 포함</h2>
+  <p style="margin-bottom:8px;font-size:14px;">메가존클라우드가 속해 있는 AX 트렌드와 기업의 포지셔닝을 정리합니다.</p>
+  <div style="background:var(--amber-bg);border:1px solid #e8c040;border-radius:8px;padding:10px 16px;font-size:12px;color:var(--amber);margin-bottom:24px;">
+    ⚡ 이 섹션은 2025년 3월 기준 공개 보도자료 및 기사를 기반으로 작성되었습니다. 2022년 회사 소개 자료와 달리 실제 AX 추진 현황이 대폭 업데이트되었습니다.
+  </div>
+
+  <!-- DX vs AX -->
+  <div class="ax-grid" style="margin-bottom:32px;">
+    <div class="ax-box" style="background:var(--blue-bg);border-color:#90b8f0;">
+      <h3 style="color:var(--blue)">DX — 디지털 전환</h3>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">프로세스를 디지털로 바꾼다</p>
+      <ul class="ax-list"><li>온프레미스 → 클라우드</li><li>종이 문서 → SaaS 시스템</li><li>수동 운영 → 자동화</li><li style="color:var(--text);font-weight:600">핵심 가치: 효율화 · 비용 절감</li></ul>
+    </div>
+    <div class="ax-mid">→<span>진화</span></div>
+    <div class="ax-box" style="background:var(--amber-bg);border-color:#e8c040;">
+      <h3 style="color:var(--amber)">AX — AI 전환</h3>
+      <p style="font-size:12px;color:var(--text3);margin-bottom:12px;">AI를 비즈니스 두뇌로 만든다</p>
+      <ul class="ax-list"><li>데이터 → AI 기반 의사결정</li><li>반복 업무 → LLM 자동화</li><li>상품 추천 → AI 초개인화</li><li style="color:var(--text);font-weight:600">핵심 가치: 새로운 수익 창출</li></ul>
+    </div>
+  </div>
+
+  <!-- ① AX 실제 추진 현황 타임라인 -->
+  <h3 style="margin-bottom:16px;">📅 AX 추진 실제 타임라인 (출처 병기)</h3>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:28px;">
+    <table class="svc-table">
+      <thead><tr><th style="width:100px">시점</th><th style="width:200px">사건</th><th>내용</th><th style="width:130px">출처</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>2023.09</td>
+          <td><span class="badge ba">GenAI360 최초 출시</span></td>
+          <td>생성형 AI 엔드투엔드 서비스 'GenAI360' 공식 출시. 컨설팅→플랫폼 선정→서비스 개발→운영 4단계 구성. 사내 HR 헬프데스크 챗봇을 파일럿으로 첫 답변 정확도 75% 이상, 고도화 후 90% 이상 달성</td>
+          <td><a href="https://zdnet.co.kr/view/?no=20230919104057" target="_blank" style="color:var(--blue);font-size:11px;">ZDNet Korea<br>2023.09.19</a></td>
+        </tr>
+        <tr>
+          <td>2024.07</td>
+          <td><span class="badge ba">하나투어 AI 챗봇</span></td>
+          <td>하나투어 항공사 규정 데이터 기반 AI 챗봇 구축. Amazon Bedrock + Claude 3.5 Sonnet + RAG 파이프라인. 챗봇 도입 후 월 이용자 270% 증가, 4개월 누적 사용자 5만 3,000명, 질의 6만 5,000건 달성</td>
+          <td><a href="https://imgnew.megazone.com/2025/02/genai360-download-pdf.pdf" target="_blank" style="color:var(--blue);font-size:11px;">IDG Korea<br>메가존 공식 자료</a></td>
+        </tr>
+        <tr>
+          <td>2024.10</td>
+          <td><span class="badge ba">GenAI360 v2 출시</span></td>
+          <td>GenAI360 v2 공개. RAG 통합 관리 플랫폼('GenAI360 Platform') 추가. ERP·DW 정형데이터 + 문서 비정형데이터 + 웹 검색 기반 답변 통합 지원. 프로그래밍 지식 없이 운영 관리자가 AI 설정·최적화 가능</td>
+          <td><a href="https://zdnet.co.kr/view/?no=20241029113831" target="_blank" style="color:var(--blue);font-size:11px;">ZDNet Korea<br>2024.10.29</a></td>
+        </tr>
+        <tr>
+          <td>2025.02</td>
+          <td><span class="badge bg2">AWS 생성형AI 컴피턴시 획득</span></td>
+          <td>AWS 생성형 AI 컴피턴시(Generative AI Competency) 공식 취득. 아시아에서 AWS '생성형 AI 파트너 혁신 얼라이언스' 국내 유일 선정(전 세계 13만+ 파트너 중 11개사). 2023년 한솔제지·하나투어·hy 등 다수 AI 프로젝트 성과 인정</td>
+          <td><a href="https://www.cio.com/article/3815937" target="_blank" style="color:var(--blue);font-size:11px;">CIO Korea<br>2025.02.04</a></td>
+        </tr>
+        <tr>
+          <td>2025.11</td>
+          <td><span class="badge bg2">엔비디아 한국 총판 계약</span></td>
+          <td>엔비디아와 한국 B2B 공식 총판 계약 체결(과천 메가존산학연센터). DGX·HGX GPU 서버 및 InfiniBand 고성능 네트워크 장비 공급. 단순 유통을 넘어 AI 인프라 설계·PoC·구축·운영까지 제공하는 '플랫폼형 총판' 모델 도입. 업계에서는 IPO 스토리 강화 계기로 평가</td>
+          <td><a href="https://zdnet.co.kr/view/?no=20251117153012" target="_blank" style="color:var(--blue);font-size:11px;">ZDNet Korea<br>2025.11.17</a></td>
+        </tr>
+        <tr>
+          <td>2025.11</td>
+          <td><span class="badge bg2">Megazone AIR 브랜드 공개</span></td>
+          <td>GenAI360을 계승하는 통합 AI 서비스 브랜드 'Megazone AIR' 공개. AIR Consulting·AIR Build·AIR Operation 등 모듈형 구성. JB우리캐피탈 생성형AI 플랫폼 구축에 AIR Consulting + AIR Build 적용</td>
+          <td><a href="https://biz.heraldcorp.com/article/10696923" target="_blank" style="color:var(--blue);font-size:11px;">헤럴드경제<br>2025.03 (최근)</a></td>
+        </tr>
+        <tr>
+          <td>2025.12</td>
+          <td><span class="badge bg2">AWS 에이전틱AI 스페셜라이제이션 취득</span></td>
+          <td>AWS 에이전틱 AI 스페셜라이제이션(Agentic AI Specialization) 취득. 금융·리테일·건설·제조 등 전 산업 수백 건 AI 프로젝트 수행 실적 기반. 자체 개발 'MSP 에이전트'로 엔지니어 생산성 3~4배 향상 목표. CAIO(공성배) 체제로 AI 전담 조직 강화</td>
+          <td><a href="https://www.newsis.com/view/NISX20251201_0003423820" target="_blank" style="color:var(--blue);font-size:11px;">뉴시스<br>2025.12.01</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ② 실제 고객 성과 (출처 병기) -->
+  <h3 style="margin-bottom:16px;">🏆 AX 실제 고객 성과 사례 (공개 발표 기준)</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:28px;">
+    <div class="card" style="--ca:var(--teal)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <h3>하나투어</h3><span class="badge bt">여행</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:8px;">항공사 규정 데이터 기반 AI 챗봇. Amazon Bedrock + Claude 3.5 Sonnet + RAG</p>
+      <div style="background:var(--teal-bg);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--teal);">
+        월 이용자 <strong>270% 증가</strong><br>누적 사용자 <strong>53,000명</strong> (4개월)<br>질의량 <strong>218% 증가</strong> (맞춤 상담 후)
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3);">출처: <a href="https://imgnew.megazone.com/2025/02/genai360-download-pdf.pdf" target="_blank" style="color:var(--blue)">IDG Korea / 메가존 공식자료 (2025.02)</a></div>
+    </div>
+    <div class="card" style="--ca:var(--purple)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <h3>JB우리캐피탈</h3><span class="badge bp">금융</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:8px;">핵심 업무보고서 자동화. Megazone AIR Consulting+Build. Amazon Bedrock + Claude Sonnet 4.5 + RAG. 금융 망분리 규제 준수 설계</p>
+      <div style="background:var(--purple-bg);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--purple);">
+        영업승인신청서 작성시간 <strong>80% 단축</strong><br>심사의견서 작성시간 <strong>30% 단축</strong>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3);">출처: <a href="https://biz.heraldcorp.com/article/10696923" target="_blank" style="color:var(--blue)">헤럴드경제 (2025.03 최근)</a></div>
+    </div>
+    <div class="card" style="--ca:var(--green)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <h3>hy (한국야쿠르트)</h3><span class="badge bg2">이커머스</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:8px;">이커머스 검색 패러다임 전환. 텍스트+벡터 하이브리드 서치 구현. Amazon Bedrock + Claude 3 Haiku + Amazon Titan</p>
+      <div style="background:var(--green-bg);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--green);">
+        자연어 검색 기반 초개인화 고객경험 구현 완료
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3);">출처: <a href="https://imgnew.megazone.com/2025/02/genai360-download-pdf.pdf" target="_blank" style="color:var(--blue)">IDG Korea / 메gazone 공식자료 (2025.02)</a></div>
+    </div>
+    <div class="card" style="--ca:var(--blue)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+        <h3>메가존 내부 HR 챗봇</h3><span class="badge bl">파일럿</span>
+      </div>
+      <p style="font-size:13px;margin-bottom:8px;">사내 HR 헬프데스크 질의응답 자동화. 한국어 특화 LLM + RAG 적용. AWS SageMaker + Kendra 기반</p>
+      <div style="background:var(--blue-bg);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--blue);">
+        1차 답변 정확도 <strong>75%+</strong><br>고도화 후 <strong>90%+</strong>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--text3);">출처: <a href="https://www.newswire.co.kr/newsRead.php?no=974658" target="_blank" style="color:var(--blue)">뉴스와이어 공식 보도자료 (2023.09.19)</a></div>
+    </div>
+  </div>
+
+  <!-- ③ 강점 vs 리스크 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;">
+    <div class="card" style="--ca:var(--green)">
+      <h3 style="color:var(--green);margin-bottom:12px;">✅ AX 강점 (근거 있는 것만)</h3>
+      <div class="rr"><div class="rr-icon">🏅</div><div><div class="rr-title">AWS 이중 AI 인증 보유</div><div class="rr-desc">2025년 생성형AI 컴피턴시 + 에이전틱AI 스페셜라이제이션 연속 취득. 아시아에서 2개 업체만 AWS AI 파트너 얼라이언스 선정</div></div></div>
+      <div class="rr"><div class="rr-icon">🦾</div><div><div class="rr-title">엔비디아 한국 공식 총판</div><div class="rr-desc">2025.11 엔비디아 B2B 총판 계약 체결. 단순 하드웨어 판매가 아닌 설계·PoC·운영 포함 '플랫폼형 총판' 모델. IPO 스토리 강화 효과</div></div></div>
+      <div class="rr"><div class="rr-icon">📊</div><div><div class="rr-title">실적 기반 AI 레퍼런스</div><div class="rr-desc">하나투어(이용자 270%↑), JB우리캐피탈(업무시간 80%↓), hy(검색 고도화) 등 수치로 검증된 사례 다수 확보</div></div></div>
+      <div class="rr"><div class="rr-icon">🏭</div><div><div class="rr-title">8,000개 고객사 → 업셀링 채널</div><div class="rr-desc">2022년 5,000개에서 2025년 8,000개로 증가. 기존 클라우드 인프라 운영 기반 위에 AI 서비스 자연스럽게 업셀링 가능</div></div></div>
+    </div>
+    <div class="card" style="--ca:var(--coral)">
+      <h3 style="color:var(--coral);margin-bottom:12px;">⚠️ 냉정한 리스크</h3>
+      <div class="rr"><div class="rr-icon">📉</div><div><div class="rr-title">AI 매출 비중 여전히 미공개</div><div class="rr-desc">2023년 GenAI360 출시 첫 해 AI 매출 '제로'에서 출발. 2025년 현재 전체 매출 대비 AI 비중이 얼마인지 공개 미확인</div></div></div>
+      <div class="rr"><div class="rr-icon">☁️</div><div><div class="rr-title">AWS·Anthropic이 직접 경쟁자</div><div class="rr-desc">Bedrock·Claude를 직접 공급하는 AWS·Anthropic이 파트너이자 잠재 경쟁자. MSP 중간자 역할 축소 가능성</div></div></div>
+      <div class="rr"><div class="rr-icon">🔧</div><div><div class="rr-title">"AI 도구" vs "AI 기업" 포지션 모호</div><div class="rr-desc">공성배 CAIO: "모델 개발 버리고 데이터·인프라·거버넌스에 집중" → 고부가가치 컨설팅이나 낮은 마진 구축 대행이냐가 관건</div></div></div>
+      <div class="rr"><div class="rr-icon">🔌</div><div><div class="rr-title">Graphcore 파트너십 불확실</div><div class="rr-desc">2022년 소개자료 핵심 AI 파트너인 Graphcore가 2023년 SoftBank에 인수. 현재 협력 상태 재확인 필요</div></div></div>
+    </div>
+  </div>
+
+  <!-- ④ IPO 스토리 테이블 -->
+  <h3 style="margin-bottom:12px;">📊 IPO 스토리에서 AX 설득 근거 — 업데이트 현황</h3>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:11px;overflow:hidden;">
+    <table>
+      <thead><tr><th>스토리 포인트</th><th>2022년 자료</th><th>2025년 최신 현황</th><th style="width:110px">상태</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>AI 인프라 수요 수혜</td>
+          <td>Graphcore IPU 파트너십</td>
+          <td>엔비디아 한국 공식 총판 계약 체결 (2025.11)</td>
+          <td><span class="badge bg2">크게 강화</span></td>
+        </tr>
+        <tr>
+          <td>생성형 AI 서비스</td>
+          <td>Matilda AI Platform (MLOps)</td>
+          <td>GenAI360→Megazone AIR로 진화. AWS 생성형AI 컴피턴시 + 에이전틱AI 스페셜라이제이션 이중 취득</td>
+          <td><span class="badge bg2">신규 확보</span></td>
+        </tr>
+        <tr>
+          <td>AI 레퍼런스 고객</td>
+          <td>공개 사례 거의 없음</td>
+          <td>하나투어·JB우리캐피탈·hy·한솔제지 등 수치 기반 사례 다수 공개</td>
+          <td><span class="badge bg2">대폭 증가</span></td>
+        </tr>
+        <tr>
+          <td>AI 매출 비중</td>
+          <td>2023년 AI 매출 '제로'</td>
+          <td>2025년 전년 대비 2배 이상 목표 (공성배 CAIO 발언). 실제 수치 미공개</td>
+          <td><span class="badge ba">확인 필요</span></td>
+        </tr>
+        <tr>
+          <td>고객 규모</td>
+          <td>5,000개사 (2022년)</td>
+          <td>8,000개사 이상 (2025년 공식 홈페이지)</td>
+          <td><span class="badge bg2">60% 성장</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- IB 메모 -->
+  <div style="background:var(--blue-bg);border:1px solid #a0c0f0;border-radius:8px;padding:14px 18px;margin-top:16px;font-size:13px;color:var(--blue);">
+    💡 <strong>IB 주니어 메모</strong> — 메가존은 AX를 실제로 하고 있습니다. 다만 "AI를 만드는 회사"가 아니라 "기업이 AI를 쓸 수 있도록 인프라·데이터·보안을 정비해주는 전문가"입니다. 엔비디아 총판은 IPO 직전 AI 인프라 사업 역량을 보강하려는 전략적 포석으로 업계에서 읽히고 있습니다. AI 매출 구체 수치와 GenAI360→AIR 전환 후 ARR 데이터가 IPO 밸류에이션의 핵심 변수가 될 것입니다.
+  </div>
+</section>
+
+<!-- ⑦ PARTNERS -->
+<section id="partners" class="reveal">
+  <div class="sec-lbl">Section 07</div>
+  <h2>파트너 생태계</h2>
+  <p style="margin-bottom:22px;font-size:14px;">100여 개 글로벌 테크 기업과의 파트너십 — 카테고리별 정리</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px;">
+    <div class="partner-sec"><h3>🔧 Tech Foundation</h3><p style="font-size:12px;color:var(--text3);margin-bottom:9px;">인프라·보안·CDN·모니터링·네트워크</p><div class="chips"><span class="chip">Intel</span><span class="chip">VMware</span><span class="chip">Dell Technologies</span><span class="chip">Cloudflare</span><span class="chip">Cisco</span><span class="chip">Datadog</span><span class="chip">Red Hat</span></div></div>
+    <div class="partner-sec"><h3>📊 Data &amp; AI</h3><p style="font-size:12px;color:var(--text3);margin-bottom:9px;">데이터 수집·통합·분석·시각화</p><div class="chips"><span class="chip">Databricks</span><span class="chip">Snowflake</span><span class="chip">Dataiku</span><span class="chip">Confluent</span><span class="chip">Qlik</span><span class="chip">TigerGraph</span></div></div>
+    <div class="partner-sec"><h3>🔒 Security</h3><p style="font-size:12px;color:var(--text3);margin-bottom:9px;">클라우드 네이티브 SECaaS</p><div class="chips"><span class="chip">Trend Micro</span><span class="chip">Okta</span><span class="chip">Chequer</span><span class="chip">Nubeva</span><span class="chip">Orca Security</span><span class="chip">Tatum Security</span></div></div>
+    <div class="partner-sec"><h3>💼 Business Solution</h3><p style="font-size:12px;color:var(--text3);margin-bottom:9px;">마케팅·CRM·인사·재무 SaaS</p><div class="chips"><span class="chip">Salesforce</span><span class="chip">Zendesk</span><span class="chip">Workato</span><span class="chip">Asana</span><span class="chip">Hyperlounge</span><span class="chip">Sendbird</span></div></div>
+    <div class="partner-sec"><h3>⚙️ DevOps</h3><p style="font-size:12px;color:var(--text3);margin-bottom:9px;">CI/CD·IaC·자동화·코드 품질</p><div class="chips"><span class="chip">HashiCorp</span><span class="chip">GitLab</span><span class="chip">SonarQube</span><span class="chip">Hackle</span><span class="chip">Sentry</span></div></div>
+  </div>
+  <div style="margin-top:32px;">
+    <h3 style="margin-bottom:12px;">🏅 주요 고객 성공 사례</h3>
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:11px;overflow:hidden;">
+      <table>
+        <thead><tr><th>고객사</th><th>업종</th><th>주요 성과</th></tr></thead>
+        <tbody>
+          <tr><td>삼성전자, LG전자, SK, KT</td><td>대기업</td><td>글로벌 클라우드 인프라 구축 및 관리</td></tr>
+          <tr><td>SM엔터테인먼트</td><td>엔터테인먼트</td><td>K-POP 트래픽 1,000~10,000배 폭증 대응, 운영비 50% 절감, 가용성 99.999%</td></tr>
+          <tr><td>카카오, 야놀자, 쿠팡, 직방</td><td>테크 플랫폼</td><td>대규모 트래픽 처리, 클라우드 최적화, 누적 2,900만 다운로드 인프라 지원</td></tr>
+          <tr><td>미래에셋, 유안타증권</td><td>금융</td><td>운영비 50%↓, 업무시간 3시간→30분, 장애변동성 대응, 99.999% 가용성</td></tr>
+          <tr><td>HYBE(Big Hit), DEVSISTERS</td><td>엔터·게임</td><td>글로벌 팬 플랫폼 및 게임 서버 인프라 운영</td></tr>
+          <tr><td>AmorePacific, CJ Freshway</td><td>소비재·식품</td><td>전사 클라우드 전환, 성능 38~55% 개선, SR처리 시간 감소</td></tr>
+          <tr><td>연세대, KAIST, 숙명여대</td><td>교육</td><td>학사 시스템 클라우드 전환, 비용 최적화, 만족도 향상</td></tr>
+          <tr><td>제주맥주</td><td>제조</td><td>단기간 SAP 성공 구축, 24시간 보안관제, 유연한 확장 인프라 확보</td></tr>
+          <tr><td>Dalcomsoft Japan</td><td>게임 (글로벌)</td><td>일본 현지 AWS 지원, CDN 할인, 비용 25~30% 절감, AWS 아키텍처 개선</td></tr>
+          <tr><td>Hyundai L&amp;C (HanStone Quartz)</td><td>제조·북미</td><td>SAP 마이그레이션 1개월 단축, Go-Live 후 안정성 증가, 글로벌 MSP 24/7 모니터링</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn" style="margin-top:10px;">자료 기준 2022년 — 현재 대기업 고객 계약 갱신율 및 최신 레퍼런스 데이터 별도 확인 필요</div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span>메가존클라우드 IPO 분석 보고서 · IB Junior Research</span>
+  <span>⚠ 기준: 2022년 회사 소개 자료 · 투자 결정 전 최신 정보 반드시 확인</span>
+</footer>
+
+<script>
+function tQA(el){const item=el.closest('.qa-item');const open=item.classList.contains('open');document.querySelectorAll('.qa-item').forEach(i=>i.classList.remove('open'));if(!open)item.classList.add('open');}
+const io=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const bio=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){x.target.querySelectorAll('.bar-fill').forEach(b=>{const w=b.style.width;b.style.width='0';requestAnimationFrame(()=>requestAnimationFrame(()=>{b.style.width=w;}));});}});},{threshold:.3});
+document.querySelectorAll('.bar-chart').forEach(el=>bio.observe(el));
+</script>
+</body>
+</html>
